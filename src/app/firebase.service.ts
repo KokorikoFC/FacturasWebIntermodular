@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { getFirestore, collection, getDocs } from 'firebase/firestore'; // Importa Firestore functions
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'; // Import doc, getDoc, and addDoc
 
 @Injectable({
   providedIn: 'root'
@@ -50,20 +50,46 @@ export class FirebaseService {
   // Método para obtener los bills del usuario autenticado
   async getBillsForCurrentUser(): Promise<any[]> {
     const user: User | null = this.auth.currentUser;
-    console.log('Current User:', user);
     if (!user) {
-      console.log('No user logged in.');
-      return [];
+      return []; // No hay usuario autenticado
     }
 
-    console.log('User UID:', user.uid);
-    const billsCollection = collection(this.db, `user/${user.uid}/bill`);
-    console.log('Bills Collection Path:', `user/${user.uid}/bill`);
+    const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
     const querySnapshot = await getDocs(billsCollection);
     const bills: any[] = [];
     querySnapshot.forEach((doc) => {
-      bills.push({ id: doc.id, ...doc.data() });
+      bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
     });
     return bills;
+  }
+
+  // Método para obtener los datos del documento del usuario
+  async getUserData(userId: string): Promise<any> {
+    if (!userId) {
+      return null; // No hay ID de usuario
+    }
+    const userDocRef = doc(this.db, `user`, userId); // Path al documento del usuario (singular 'user')
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data(); // Retorna los datos del documento
+    } else {
+      console.log("No such document!");
+      return null; // No se encontró el documento
+    }
+  }
+
+  async addProjectForCurrentUser(projectName: string, technologies: string[]): Promise<any> {
+    const user = this.auth.currentUser;
+    if (!user) {
+      throw new Error('No user logged in.'); // Or handle unauthenticated state appropriately
+    }
+  
+    const projectsCollection = collection(this.db, `user/${user.uid}/project`); // Path to projects subcollection (singular 'project')
+  
+    return await addDoc(projectsCollection, { // Use addDoc to add a new document
+      name: projectName,
+      technologies: technologies,
+    });
   }
 }
