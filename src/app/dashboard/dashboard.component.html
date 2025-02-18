@@ -4,4 +4,28 @@
 <div class="dashboard-content">
   <h1>Dashboard</h1>
   <p>Bienvenido al panel de control.</p>
-  </div>
+  
+  <h1>Dashboard Component is Loaded!</h1>
+
+<div *ngIf="currentUserEmail">
+  <p>Logged in as: <strong>{{ currentUserEmail }}</strong></p>
+  <p>User ID: <strong>{{ currentUserId }}</strong></p>
+</div>
+<div *ngIf="!currentUserEmail">
+  <p><strong>No user logged in.</strong></p>
+</div>
+
+<h2>Your Bills</h2>
+
+<ul *ngIf="bills.length > 0; else noBills">
+  <li *ngFor="let bill of bills">
+    <h3>{{ bill.name }}</h3>
+    <p>Description: {{ bill.description }}</p>
+    <p>ID del documento: {{ bill.id }}</p>
+  </li>
+</ul>
+
+<ng-template #noBills>
+  <p>No bills available.</p>
+</ng-template>
+</div>
