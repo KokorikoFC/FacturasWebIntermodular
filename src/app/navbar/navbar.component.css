@@ -1,0 +1,17 @@
+.fixed-left {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Ajusta la altura según necesites */
+    width: auto; /* Ancho automático según el contenido */
+    padding-top: 20px; /* Ajusta el espacio superior si es necesario */
+  }
+  
+  .navbar-nav {
+    flex-direction: column; /* Para que los items estén en vertical */
+  }
+  
+  .content {
+    margin-left: 200px; /* Ajusta este valor según el ancho de tu navbar */
+    padding: 20px;
+  }
