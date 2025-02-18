@@ -1,32 +1,46 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-import { getAuth } from 'firebase/auth'; // Si quieres usar autenticación
-import { getFirestore } from 'firebase/firestore'; // Si usas Firestore
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
   private firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_ID_DEL_PROYECTO.firebaseapp.com",
-    projectId: "TU_ID_DEL_PROYECTO",
-    storageBucket: "TU_ID_DEL_PROYECTO.appspot.com",
-    messagingSenderId: "TU_MESSAGING_SENDER_ID",
-    appId: "TU_APP_ID",
-    measurementId: "TU_MEASUREMENT_ID"
+    apiKey: "AIzaSyBMHiU6y_Eq5LZHwdQabnW3H-lFSJ1_N9M",
+    authDomain: "apptrabajadoresautonomos.firebaseapp.com",
+    projectId: "apptrabajadoresautonomos",
+    storageBucket: "apptrabajadoresautonomos.firebasestorage.app",
+    messagingSenderId: "159659703361",
+    appId: "1:159659703361:web:f5e9f05d48669b7b389ac0"
   };
 
   private app: any;
+  private auth: any;
 
   constructor() {
     // Inicializa Firebase
     this.app = initializeApp(this.firebaseConfig);
-    getAnalytics(this.app); // Si usas Analytics
-    getAuth(this.app); // Si usas Autenticación
-    getFirestore(this.app); // Si usas Firestore
+    this.auth = getAuth(this.app); // Firebase Auth
   }
 
-  // Aquí puedes añadir métodos para interactuar con Firebase, como login, registro, etc.
+  // Método para registrar un nuevo usuario
+  registerUser(email: string, password: string) {
+    return createUserWithEmailAndPassword(this.auth, email, password);
+  }
+
+  // Método para hacer login
+  loginUser(email: string, password: string) {
+    return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  // Método para obtener el usuario actual
+  getCurrentUser() {
+    return this.auth.currentUser;
+  }
+
+  // Método para cerrar sesión
+  logoutUser() {
+    return this.auth.signOut();
+  }
 }
