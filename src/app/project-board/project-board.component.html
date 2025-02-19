@@ -28,7 +28,6 @@
       <h4>Bills for {{ project.name }}</h4>
       <div *ngFor="let bill of project.bills">
         <app-bill-card [bill]="bill" cdkDrag></app-bill-card>
-        <!-- Mostrar bill en el proyecto -->
       </div>
     </div>
   </div>
