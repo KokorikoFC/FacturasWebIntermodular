@@ -1,59 +1,51 @@
-<p>project-management works!</p>
 <app-navbar></app-navbar>
 
 <div class="project-management-content">
   <div *ngIf="currentUserEmail">
-    <p>
-      Logged in as: <strong>{{ currentUserEmail }}</strong>
-    </p>
-    <p>
-      User ID: <strong>{{ currentUserId }}</strong>
-    </p>
-    <p>
-      User Name <strong>{{ userName }}</strong>
-    </p>
+    <p>Logged in as: <strong>{{ currentUserEmail }}</strong></p>
+    <p>User ID: <strong>{{ currentUserId }}</strong></p>
+    <p>User Name: <strong>{{ userName }}</strong></p>
   </div>
   <div *ngIf="!currentUserEmail">
     <p><strong>No user logged in.</strong></p>
   </div>
 
-
-
-  <div class="content-container">
-    <div class="bill-cards-container">
+  <div class="content-container" cdkDropListGroup>
+    <!-- Lista de Bills (Con arrastre habilitado) -->
+    <div class="bill-cards-container" 
+         cdkDropList 
+         (cdkDropListDropped)="dropBill($event)" 
+         [cdkDropListData]="bills"
+         [cdkDropListConnectedTo]="[]"> <!-- No conectar con otras listas -->
       <h2>Your Bills</h2>
       <ng-container *ngIf="bills.length > 0; else noBills">
-        <app-bill-card *ngFor="let bill of bills" [bill]="bill"></app-bill-card>
+        <app-bill-card 
+        *ngFor="let bill of bills" 
+        [bill]="bill" 
+        cdkDrag 
+        [cdkDragData]="bill">
+      </app-bill-card>
       </ng-container>
-
       <ng-template #noBills>
         <p>No bills available.</p>
       </ng-template>
     </div>
 
-
-
+    <!-- Lista de Projects (Sin arrastre) -->
     <div class="project-boards-container">
       <h2>Your Projects</h2>
       <ng-container *ngIf="projects.length > 0; else noProjects">
-        <app-project-board
-          *ngFor="let project of projects"
-          [project]="project"
-        ></app-project-board>
+        <!-- Ya no usamos cdkDrag en los proyectos para que no sean arrastrables -->
+        <app-project-board *ngFor="let project of projects" [project]="project"></app-project-board>
       </ng-container>
-
       <ng-template #noProjects>
         <p>No projects available.</p>
       </ng-template>
     </div>
-
-    <ng-template #noProjects>
-      <p>No projects available.</p>
-    </ng-template>
   </div>
 
   <button (click)="openAddProjectForm()" class="add-project-btn">
-    Agregar Proyecto
+    Add Project
   </button>
 
   <div *ngIf="isAddProjectFormVisible" class="modal-overlay">

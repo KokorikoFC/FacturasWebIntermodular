@@ -2,15 +2,26 @@
   <div *ngIf="project; else noProject">
     <h3>{{ project.name }}</h3>
     <p>Technologies:</p>
-    <div class="technologies-grid">  <div *ngFor="let tech of availableTechnologies" class="technology-item">
+    <div class="technologies-grid">
+      <div *ngFor="let tech of availableTechnologies" class="technology-item">
         <label for="{{tech.name}}">
           <img [src]="tech.image" alt="{{tech.name}}" class="technology-image">
           <span>{{ tech.name }}</span>
         </label>
       </div>
     </div>
-    <div class="project-list-cont">
+
+    <!-- Contenedor donde los bills se pueden soltar -->
+    <div class="project-list-cont"
+         cdkDropList
+         (cdkDropListDropped)="onBillDropped($event)"
+         [cdkDropListData]="project.bills"
+         [cdkDropListConnectedTo]="['billsList']"> <!-- Conectar solo con la lista de Bills -->
+      <h4>Bills for {{ project.name }}</h4>
+      <div *ngFor="let bill of project.bills">
+        <app-bill-card [bill]="bill"></app-bill-card> <!-- Mostrar el bill en el proyecto -->
       </div>
+    </div>
   </div>
   <ng-template #noProject>
     <p>No project data available.</p>

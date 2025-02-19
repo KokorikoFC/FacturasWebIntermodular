@@ -1,23 +1,44 @@
-import { Component, Input } from '@angular/core'; // Import Input
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';  // Importar DragDropModule
+
+import { BillCardComponent } from '../bill-card/bill-card.component'; // Importar BillCardComponent
 
 @Component({
   selector: 'app-project-board',
   standalone: true,
-  imports: [CommonModule], // Import CommonModule if you need directives like *ngIf, *ngFor in the template
+  imports: [CommonModule, DragDropModule, BillCardComponent],
   templateUrl: './project-board.component.html',
-  styleUrl: './project-board.component.css'
+  styleUrls: ['./project-board.component.css']
 })
 export class ProjectBoardComponent {
-  @Input() project: any; // Declare project as an Input property
+  @Input() project: any;  // Declarar el proyecto como propiedad de entrada
 
   availableTechnologies = [
-    { name: 'Angular', image: 'assets/images/f.webp' }, // Correct path
+    { name: 'Angular', image: 'assets/images/f.webp' },
     { name: 'Firebase', image: 'assets/images/f.webp' },
-    { name: 'D3.js', image: 'assets/images/f.webp' },     // Correct path (assuming you have d3js-logo.png)
-    { name: 'React', image: 'assets/images/firebase2.png' },     // Correct path (assuming you have react-logo.png)
-    { name: 'Vue.js', image: 'assets/images/firebase2.png' }      // Correct path (assuming you have vuejs-logo.png)
+    { name: 'D3.js', image: 'assets/images/f.webp' },
+    { name: 'React', image: 'assets/images/firebase2.png' },
+    { name: 'Vue.js', image: 'assets/images/firebase2.png' }
   ];
-  
-  constructor() { } // Keep constructor empty - no data fetching here
+
+  constructor() { }
+
+  // Método para manejar cuando un bill es soltado en el proyecto
+  onBillDropped(event: any) {
+    const bill = event.item.data;  // Obtener el bill arrastrado
+    console.log('Bill dropped into project:', bill);
+
+    // Asegurarse de que el proyecto tenga la propiedad bills
+    if (!this.project.bills) {
+      this.project.bills = [];  // Si no existe, inicializar el array
+    }
+
+    // Agregar el bill al proyecto
+    this.project.bills.push(bill);
+
+    // Forzar a Angular a detectar cambios si es necesario
+    // Esta línea es importante si estás trabajando con una referencia de objeto inmutable
+    this.project = { ...this.project };  // Crear una nueva referencia para forzar la actualización
+  }
 }
