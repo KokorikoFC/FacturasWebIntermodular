@@ -110,19 +110,36 @@ export class ProjectManagementComponent implements OnInit {
 
   // Método para manejar el evento cuando un "bill" es movido dentro de la lista de bills
   dropBill(event: CdkDragDrop<any[]>) {
-    // Solo moverlo dentro de la misma lista (bills)
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this.bills, event.previousIndex, event.currentIndex);
-      console.log('Bills after move:', this.bills);
+    const bill = event.previousContainer.data[event.previousIndex]; // Obtener la factura arrastrada
+    
+    // Verificar que el contenedor de destino no sea el mismo
+    if (event.previousContainer !== event.container) {
+      // Si es un movimiento a un proyecto, encontrar el proyecto correspondiente
+      if (event.container.id === 'projectList') {
+        const targetProject = this.projects.find(p => p.bills === event.container.data);
+        
+        if (targetProject) {
+          if (!targetProject.bills) {
+            targetProject.bills = [];
+          }
+  
+          // Agregar el bill al nuevo proyecto
+          targetProject.bills.push(bill);
+  
+          // Eliminar el bill de la lista original
+          event.previousContainer.data.splice(event.previousIndex, 1);
+          
+          // Forzar detección de cambios
+          this.bills = [...this.bills];
+          
+          console.log(`Bill ${bill.id} moved to project ${targetProject.id}`);
+        }
+      } else {
+        // Si es un movimiento entre bills, simplemente actualizar la lista de facturas
+        moveItemInArray(this.bills, event.previousIndex, event.currentIndex);
+      }
     }
   }
-
-  // Método para manejar el evento cuando un "project" es movido dentro de la lista de projects
-  dropProject(event: CdkDragDrop<any[]>) {
-    // Solo moverlo dentro de la misma lista (projects)
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this.projects, event.previousIndex, event.currentIndex);
-      console.log('Projects after move:', this.projects);
-    }
-  }
+  
+  
 }
