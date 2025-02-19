@@ -1,0 +1,10 @@
+<div class="bill-card-container">
+    <div *ngIf="bill; else noBill">
+      <h3>{{ bill.name }}</h3>
+      <p>Description: {{ bill.description }}</p>
+      <p>ID del documento: {{ bill.id }}</p>
+    </div>
+    <ng-template #noBill>
+      <p>No bill available.</p>
+    </ng-template>
+  </div>

@@ -47,21 +47,6 @@ export class FirebaseService {
     return this.auth.signOut();
   }
 
-  // Método para obtener los bills del usuario autenticado
-  async getBillsForCurrentUser(): Promise<any[]> {
-    const user: User | null = this.auth.currentUser;
-    if (!user) {
-      return []; // No hay usuario autenticado
-    }
-
-    const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
-    const querySnapshot = await getDocs(billsCollection);
-    const bills: any[] = [];
-    querySnapshot.forEach((doc) => {
-      bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
-    });
-    return bills;
-  }
 
   // Método para obtener los datos del documento del usuario
   async getUserData(userId: string): Promise<any> {
@@ -92,4 +77,38 @@ export class FirebaseService {
       technologies: technologies,
     });
   }
+
+    // Método para obtener los bills del usuario autenticado
+    async getBillsForCurrentUser(): Promise<any[]> {
+      const user: User | null = this.auth.currentUser;
+      if (!user) {
+        return []; // No hay usuario autenticado
+      }
+  
+      const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
+      const querySnapshot = await getDocs(billsCollection);
+      const bills: any[] = [];
+      querySnapshot.forEach((doc) => {
+        bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
+      });
+      return bills;
+    }
+
+      // Método para obtener los bills del usuario autenticado
+  async getProjectsForCurrentUser(): Promise<any[]> {
+    const user: User | null = this.auth.currentUser;
+    if (!user) {
+      return []; // No hay usuario autenticado
+    }
+
+    const projectCollection = collection(this.db, `user/${user.uid}/project`); // Path a la colección de bills del usuario
+    const querySnapshot = await getDocs(projectCollection);
+    const projects: any[] = [];
+    querySnapshot.forEach((doc) => {
+      console.log("Project doc data:", doc.data());
+      projects.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
+    });
+    return projects;
+  }
+
 }
