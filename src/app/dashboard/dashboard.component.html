@@ -1,7 +1,27 @@
 <p>dashboard works!</p>
 <app-navbar></app-navbar>
 
+<style>
+  .dashboard-content {
+    width: 70%;
+    margin: 0 auto;
+  }
+</style>
+
 <div class="dashboard-content">
   <h1>Dashboard</h1>
   <p>Bienvenido al panel de control.</p>
+
+  <div *ngIf="loadingData">
+    Cargando datos...
+  </div>
+
+  <div *ngIf="!loadingData" class="chart-container">
+    <h2>Total de Facturas por Mes</h2>
+    <app-bar-chart
+      [data]="chartData"
+      categoryField="month"
+      valueField="total"
+    ></app-bar-chart>
+  </div>
 </div>
