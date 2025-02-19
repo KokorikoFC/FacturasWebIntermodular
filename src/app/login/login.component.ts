@@ -26,7 +26,7 @@ export class LoginComponent {
         const user = userCredential.user;
         console.log('Usuario logueado', user);
         // Redirige al dashboard tras login exitoso
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/projectManagement']);
       })
       .catch((error) => {
         console.error('Error al hacer login:', error.message);
