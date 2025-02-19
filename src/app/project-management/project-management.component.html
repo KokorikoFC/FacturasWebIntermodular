@@ -18,34 +18,40 @@
 
   <div class="content-container" cdkDropListGroup>
     <!-- Lista de Bills (Con arrastre habilitado) -->
-<div class="bill-cards-container"
-cdkDropList
-id="billsList"
-(cdkDropListDropped)="dropBill($event)"
-[cdkDropListData]="bills"
-[cdkDropListConnectedTo]="['projectList']">
-<h2>Your Bills</h2>
-<ng-container *ngIf="bills.length > 0; else noBills">
-<app-bill-card *ngFor="let bill of bills" [bill]="bill" cdkDrag [cdkDragData]="bill"></app-bill-card>
-</ng-container>
-<ng-template #noBills>
-<p>No bills available.</p>
-</ng-template>
-</div>
+    <div
+      class="bill-cards-container"
+      cdkDropList
+      id="billsList"
+      (cdkDropListDropped)="dropBill($event)"
+      [cdkDropListData]="bills"
+      [cdkDropListConnectedTo]="['projectList']"
+    >
+      <h2>Your Bills</h2>
+      <ng-container *ngIf="bills.length > 0; else noBills">
+        <app-bill-card
+          *ngFor="let bill of bills"
+          [bill]="bill"
+          cdkDrag
+          [cdkDragData]="bill"
+        ></app-bill-card>
+      </ng-container>
+      <ng-template #noBills>
+        <p>No bills available.</p>
+      </ng-template>
+    </div>
 
-<!-- Lista de Projects -->
-<div class="project-boards-container">
-<h2>Your Projects</h2>
-<ng-container *ngIf="projects.length > 0; else noProjects">
-<div *ngFor="let project of projects">
- <app-project-board [project]="project"></app-project-board>
-</div>
-</ng-container>
-<ng-template #noProjects>
-<p>No projects available.</p>
-</ng-template>
-</div>
-
+    <!-- Lista de Projects -->
+    <div class="project-boards-container">
+      <h2>Your Projects</h2>
+      <ng-container *ngIf="projects.length > 0; else noProjects">
+        <div *ngFor="let project of projects">
+          <app-project-board [project]="project"></app-project-board>
+        </div>
+      </ng-container>
+      <ng-template #noProjects>
+        <p>No projects available.</p>
+      </ng-template>
+    </div>
   </div>
 
   <button (click)="openAddProjectForm()" class="add-project-btn">

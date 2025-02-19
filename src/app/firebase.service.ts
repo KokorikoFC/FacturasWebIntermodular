@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { getFirestore, collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'; // Import doc, getDoc, and addDoc
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc } from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +94,19 @@ export class FirebaseService {
       return bills;
     }
 
+    async updateBill(billId: string, data: any): Promise<void> {
+      const user: User | null = this.auth.currentUser;
+      if (!user) {
+        return Promise.reject('No user logged in'); // Asegúrate de manejar el caso de no estar logueado
+      }
+    
+      const billDocRef = doc(this.db, `user/${user.uid}/bill`, billId); // Ruta correcta a la factura
+    
+      // Realiza la actualización
+      return updateDoc(billDocRef, data);
+    }
+
+    
       // Método para obtener los bills del usuario autenticado
   async getProjectsForCurrentUser(): Promise<any[]> {
     const user: User | null = this.auth.currentUser;
