@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { AddProjectFormComponent } from '../add-project-form/add-project-form.component'; // Import AddProjectFormComponent
 
 @Component({
   selector: 'app-project-management',
   standalone: true,
-  imports: [NavbarComponent, FormsModule, CommonModule, RouterModule], 
+  imports: [NavbarComponent, FormsModule, CommonModule, RouterModule, AddProjectFormComponent], // Import and add AddProjectFormComponent to imports
   templateUrl: './project-management.component.html',
   styleUrl: './project-management.component.css'
 })
@@ -17,6 +18,8 @@ export class ProjectManagementComponent implements OnInit {
   currentUserEmail: string | null = null;
   currentUserId: string | null = null;
   userName: string | null = null;
+  isAddProjectFormVisible: boolean = false; // Flag to control modal visibility
+
 
   constructor(private firebaseService: FirebaseService, private router: Router) { }
 
@@ -73,4 +76,11 @@ export class ProjectManagementComponent implements OnInit {
       });
   }
 
+  openAddProjectForm() {
+    this.isAddProjectFormVisible = true; // Show the modal
+  }
+
+  closeAddProjectForm() {
+    this.isAddProjectFormVisible = false; // Hide the modal
+  }
 }

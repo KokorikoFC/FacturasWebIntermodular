@@ -14,11 +14,11 @@ import { Router } from '@angular/router';
 export class AddProjectFormComponent {
   projectName: string = '';
   availableTechnologies = [
-    { name: 'Angular', image: 'assets/images/angular-logo.png' },
-    { name: 'Firebase', image: 'assets/images/firebase-logo.png' },
-    { name: 'D3.js', image: 'assets/images/d3js-logo.png' },
-    { name: 'React', image: 'assets/images/react-logo.png' },
-    { name: 'Vue.js', image: 'assets/images/vuejs-logo.png' }
+    { name: 'Angular', image: 'assets/images/f.webp' }, // Correct path
+    { name: 'Firebase', image: 'assets/images/f.webp' },
+    { name: 'D3.js', image: 'assets/images/f.webp' },     // Correct path (assuming you have d3js-logo.png)
+    { name: 'React', image: 'assets/images/firebase2.png' },     // Correct path (assuming you have react-logo.png)
+    { name: 'Vue.js', image: 'assets/images/firebase2.png' }      // Correct path (assuming you have vuejs-logo.png)
   ];
   selectedTechnologies: string[] = []; // <-- CORRECTED: Initialized as empty string array
   errorMessage: string = '';
