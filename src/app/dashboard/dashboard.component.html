@@ -9,55 +9,62 @@
 </style>
 
 <div class="dashboard-content">
-    <h1>Dashboard</h1>
-    <p>Bienvenido al panel de control.</p>
+  <h1>Dashboard</h1>
+  <p>Bienvenido al panel de control.</p>
 
-    <div *ngIf="loadingData">
-        Cargando datos...
+  <div class="year-selector">
+    <label for="year">Año:</label>
+    <select id="year" [(ngModel)]="selectedYear" (ngModelChange)="onYearChange()">
+      <option *ngFor="let year of availableYears" [value]="year">{{ year }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="loadingData">
+    Cargando datos...
+  </div>
+
+  <div *ngIf="!loadingData" class="chart-container">
+    <h2>Total de Facturas por Mes ({{ selectedYear }})</h2>
+    <app-bar-chart
+      [data]="chartData"
+      categoryField="month"
+      valueField="total"
+    ></app-bar-chart>
+  </div>
+
+  <div *ngIf="!loadingData" class="consulta-container">
+    <h2>Consulta de Saldos de Facturas</h2>
+
+    <div>
+      <label for="periodo">Periodo:</label>
+      <select id="periodo" [(ngModel)]="consultaPeriodo" (ngModelChange)="realizarConsulta()">
+        <option value="mensual">Mensual</option>
+        <option value="trimestral">Trimestral</option>
+        <option value="anual">Anual</option>
+      </select>
     </div>
 
-    <div *ngIf="!loadingData" class="chart-container">
-        <h2>Total de Facturas por Mes</h2>
-        <app-bar-chart
-            [data]="chartData"
-            categoryField="month"
-            valueField="total"
-        ></app-bar-chart>
+    <div *ngIf="resultadosConsulta">
+      <h3>Totales {{ consultaPeriodo | titlecase }}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Periodo</th>
+            <th>Base Imponible</th>
+            <th>IVA</th>
+            <th>IRPF</th>
+            <th>Total Factura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let periodoKey of consultaPeriodoKeys">     <td>{{ periodoKey }}</td>
+            <td>{{ resultadosConsulta[periodoKey].baseImponible | number:'1.2-2' }}</td>
+            <td>{{ resultadosConsulta[periodoKey].iva | number:'1.2-2' }}</td>
+            <td>{{ resultadosConsulta[periodoKey].irpf | number:'1.2-2' }}</td>
+            <td>{{ resultadosConsulta[periodoKey].total | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <div *ngIf="!loadingData" class="consulta-container">
-        <h2>Consulta de Saldos de Facturas</h2>
-
-        <div>
-            <label for="periodo">Periodo:</label>
-            <select id="periodo" [(ngModel)]="consultaPeriodo" (ngModelChange)="realizarConsulta()">
-                <option value="mensual">Mensual</option>
-                <option value="trimestral">Trimestral</option>
-                <option value="anual">Anual</option>
-            </select>
-        </div>
-
-        <div *ngIf="resultadosConsulta">
-            <h3>Totales {{ consultaPeriodo | titlecase }}</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Periodo</th>
-                        <th>Base Imponible</th>
-                        <th>IVA</th>
-                        <th>IRPF</th>
-                        <th>Total Factura</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let periodoKey of consultaPeriodoKeys">  <td>{{ periodoKey }}</td>
-                        <td>{{ resultadosConsulta[periodoKey].baseImponible | number:'1.2-2' }}</td>
-                        <td>{{ resultadosConsulta[periodoKey].iva | number:'1.2-2' }}</td>
-                        <td>{{ resultadosConsulta[periodoKey].irpf | number:'1.2-2' }}</td>
-                        <td>{{ resultadosConsulta[periodoKey].total | number:'1.2-2' }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+  </div>
 </div>

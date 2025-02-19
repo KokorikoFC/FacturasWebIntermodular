@@ -17,9 +17,13 @@ export class DashboardComponent implements OnInit {
     facturas: any[] = [];
     chartData: BarChartDataPoint[] = [];
     loadingData: boolean = true;
-    consultaPeriodo: string = 'mensual'; // Periodo de consulta inicial
-    resultadosConsulta: any = null; // Para almacenar los resultados de la consulta
-    consultaPeriodoKeys: string[] = []; // Array para almacenar las claves de resultadosConsulta
+    consultaPeriodo: string = 'mensual';
+    resultadosConsulta: any = null;
+    consultaPeriodoKeys: string[] = [];
+
+    selectedYear: string = ''; // Nueva propiedad para el año seleccionado
+    availableYears: string[] = []; // Nueva propiedad para la lista de años disponibles
+
 
     constructor(private firebaseService: FirebaseService) { }
 
@@ -30,40 +34,67 @@ export class DashboardComponent implements OnInit {
     async loadFacturas(): Promise<void> {
         this.loadingData = true;
         this.facturas = await this.firebaseService.getBillsForCurrentUser();
-        this.prepareChartData(); // Mantiene la preparación de datos para el gráfico
-        this.realizarConsulta(); // Ejecuta la consulta inicial al cargar los datos
+        this.extractAvailableYears(); // Extraer años disponibles de las facturas
+        this.selectedYear = this.availableYears[0] || new Date().getFullYear().toString(); // Seleccionar el primer año o el año actual por defecto
+        this.prepareChartData();
         this.loadingData = false;
     }
 
+    extractAvailableYears(): void {
+        const years = new Set<string>(); // Usar Set para evitar años duplicados
+        this.facturas.forEach(factura => {
+            const fechaEmisionString = factura.fechaEmision;
+            const fechaEmision = this.parseDate(fechaEmisionString);
+            if (fechaEmision) {
+                years.add(fechaEmision.getFullYear().toString());
+            }
+        });
+        this.availableYears = Array.from(years).sort(); // Convertir Set a Array y ordenar
+    }
+
+
+    onYearChange(): void {
+        this.prepareChartData(); // Recalcular datos de la gráfica al cambiar el año
+    }
+
+
     prepareChartData(): void {
-      if (this.facturas && this.facturas.length > 0) {
-          const monthlyTotals: { [month: string]: number } = {};
-          this.facturas.forEach(factura => {
-              const fechaEmisionString = factura.fechaEmision;
-              const fechaEmision = this.parseDate(fechaEmisionString);
-  
-              if (!fechaEmision) {
-                  console.error("Invalid Date detected for chart:", fechaEmisionString);
-                  return;
-              }
-  
-              const month = fechaEmision.toLocaleString('default', { month: 'short' });
-              monthlyTotals[month] = (monthlyTotals[month] || 0) + factura.total;
-          });
-  
-          this.chartData = Object.keys(monthlyTotals)
-              .map(month => ({
-                  month: month,
-                  total: monthlyTotals[month]
-              }))
-              .sort((a, b) => { // Add sort here
-                  const monthOrder = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-                  return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
-              });
-      } else {
-          this.chartData = [];
-      }
-  }
+        const selectedYear = this.selectedYear; // Obtener el año seleccionado
+        if (this.facturas && this.facturas.length > 0 && selectedYear) { // Asegurarse de que selectedYear no esté vacío
+            const monthlyTotals: { [month: string]: number } = {};
+            this.facturas
+                .filter(factura => { // Filtrar facturas por año seleccionado
+                    const fechaEmisionString = factura.fechaEmision;
+                    const fechaEmision = this.parseDate(fechaEmisionString);
+                    return fechaEmision && fechaEmision.getFullYear().toString() === selectedYear;
+                })
+                .forEach(factura => {
+                    const fechaEmisionString = factura.fechaEmision;
+                    const fechaEmision = this.parseDate(fechaEmisionString);
+
+                    if (!fechaEmision) {
+                        console.error("Invalid Date detected for chart:", fechaEmisionString);
+                        return;
+                    }
+
+                    const month = fechaEmision.toLocaleString('default', { month: 'short' });
+                    monthlyTotals[month] = (monthlyTotals[month] || 0) + factura.total;
+                });
+
+            this.chartData = Object.keys(monthlyTotals)
+                .map(month => ({
+                    month: month,
+                    total: monthlyTotals[month]
+                }))
+                .sort((a, b) => {
+                    const monthOrder = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+                    return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+                });
+        } else {
+            this.chartData = [];
+        }
+    }
+
 
     realizarConsulta(): void {
         if (!this.facturas || this.facturas.length === 0) {
@@ -118,16 +149,19 @@ export class DashboardComponent implements OnInit {
         const monthlyTotals: { [month: string]: any } = {};
 
         this.facturas.forEach(factura => {
+
+
             const fechaEmisionString = factura.fechaEmision;
             console.log("fechaEmision (string):", fechaEmisionString);
 
-            const fechaEmision = this.parseDate(fechaEmisionString); // Use parseDate function
+            const fechaEmision = this.parseDate(fechaEmisionString);
             console.log("fechaEmision (Date):", fechaEmision);
 
-            if (!fechaEmision) { // Check if parseDate returned null (invalid date)
+            if (!fechaEmision) {
                 console.error("Invalid Date detected for:", fechaEmisionString);
-                return; // Skip this factura if date is invalid
+                return;
             }
+
 
             const monthYear = fechaEmision.toLocaleString('default', { month: 'short', year: 'numeric' });
 
@@ -151,15 +185,17 @@ export class DashboardComponent implements OnInit {
         const quarterlyTotals: { [quarter: string]: any } = {};
 
         this.facturas.forEach(factura => {
+
+
             const fechaEmisionString = factura.fechaEmision;
             console.log("fechaEmision (string):", fechaEmisionString);
 
-            const fechaEmision = this.parseDate(fechaEmisionString); // Use parseDate function
+            const fechaEmision = this.parseDate(fechaEmisionString);
             console.log("fechaEmision (Date):", fechaEmision);
 
-            if (!fechaEmision) { // Check if parseDate returned null (invalid date)
+            if (!fechaEmision) {
                 console.error("Invalid Date detected for:", fechaEmisionString);
-                return; // Skip this factura if date is invalid
+                return;
             }
 
             const year = fechaEmision.getFullYear();
@@ -187,15 +223,16 @@ export class DashboardComponent implements OnInit {
         const annualTotals: { [year: string]: any } = {};
 
         this.facturas.forEach(factura => {
+
             const fechaEmisionString = factura.fechaEmision;
             console.log("fechaEmision (string):", fechaEmisionString);
 
-            const fechaEmision = this.parseDate(fechaEmisionString); // Use parseDate function
+            const fechaEmision = this.parseDate(fechaEmisionString);
             console.log("fechaEmision (Date):", fechaEmision);
 
-            if (!fechaEmision) { // Check if parseDate returned null (invalid date)
+            if (!fechaEmision) {
                 console.error("Invalid Date detected for:", fechaEmisionString);
-                return; // Skip this factura if date is invalid
+                return;
             }
 
             const year = fechaEmision.getFullYear().toString();
