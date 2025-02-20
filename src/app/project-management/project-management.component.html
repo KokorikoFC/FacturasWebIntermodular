@@ -5,7 +5,7 @@
   <div class="content-container" cdkDropListGroup>
     <!-- Lista de Projects -->
     <div class="project-boards-container">
-      <div *ngIf="currentUserEmail">
+      <div *ngIf="currentUserEmail" class="welcome-message-cont">
         <p class="welcome-message">
           ¡Bienvenido, <strong>{{ userName }}</strong
           >!
@@ -56,6 +56,9 @@
         <app-bill-card
           *ngFor="let bill of bills"
           [bill]="bill"
+          cdkDrag
+          [cdkDragData]="bill"
+          (billDeleted)="onBillDeleted($event)"
         ></app-bill-card>
       </ng-container>
       <ng-template #noBills>

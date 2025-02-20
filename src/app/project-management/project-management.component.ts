@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // Import ChangeDetectorRef
 import { FirebaseService } from '../firebase.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -20,25 +20,29 @@ import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-
     AddProjectFormComponent,
     BillCardComponent,
     ProjectBoardComponent,
-    DragDropModule // Necesario para usar drag-drop
+    DragDropModule,
   ],
   templateUrl: './project-management.component.html',
   styleUrls: ['./project-management.component.css'],
 })
 export class ProjectManagementComponent implements OnInit {
-  bills: any[] = []; 
-  projects: any[] = []; 
-  currentUserEmail: string | null = null; 
-  currentUserId: string | null = null; 
-  userName: string | null = null; 
-  isAddProjectFormVisible: boolean = false; 
+  bills: any[] = [];
+  allBills: any[] = []; 
+  projects: any[] = [];
+  currentUserEmail: string | null = null;
+  currentUserId: string | null = null;
+  userName: string | null = null;
+  isAddProjectFormVisible: boolean = false;
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(
+    private firebaseService: FirebaseService,
+    private cdRef: ChangeDetectorRef // Inyecta ChangeDetectorRef aquí
+  ) {}
 
   ngOnInit(): void {
-    this.loadCurrentUser(); 
-    this.loadBills(); 
-    this.loadProjects(); 
+    this.loadCurrentUser();
+    this.loadBills();
+    this.loadProjects();
   }
 
   loadCurrentUser() {
@@ -81,8 +85,11 @@ export class ProjectManagementComponent implements OnInit {
   loadBills() {
     this.firebaseService.getBillsForCurrentUser()
       .then((bills) => {
-        this.bills = bills;
-        console.log('Bills:', this.bills);
+        this.allBills = bills; // Store ALL bills in allBills array
+        this.bills = this.allBills.filter(bill => !bill.idProject); // Filter for "Your Bills" list
+        console.log('All Bills loaded:', this.allBills); // Log all bills
+        console.log('Bills (without project):', this.bills); // Log bills without project
+        this.assignBillsToProjects(); // Call assignBillsToProjects here, after bills are loaded
       })
       .catch((error) => {
         console.error('Error loading bills:', error);
@@ -92,12 +99,27 @@ export class ProjectManagementComponent implements OnInit {
   loadProjects() {
     this.firebaseService.getProjectsForCurrentUser()
       .then((projects) => {
-        this.projects = projects;
+        this.projects = projects.map(project => ({ ...project, bills: [] })); // Initialize project.bills to empty array
         console.log('Projects loaded:', this.projects);
+        this.assignBillsToProjects(); // Call assignBillsToProjects again after projects are loaded (and bills are loaded)
       })
       .catch((error) => {
         console.error('Error loading projects:', error);
       });
+  }
+
+
+  assignBillsToProjects() {
+    if (!this.projects || !this.allBills) {
+      return; // Ensure projects and allBills are loaded before assigning
+    }
+    this.projects.forEach(project => {
+      // Assign bills to projects based on idProject from the ALL bills list
+      project.bills = this.allBills.filter(bill => bill.idProject === project.id);
+    });
+
+    console.log('Proyectos con facturas asignadas:', this.projects);
+    console.log('Facturas restantes disponibles (sin proyecto):', this.bills);
   }
 
   openAddProjectForm() {
@@ -112,34 +134,45 @@ export class ProjectManagementComponent implements OnInit {
   dropBill(event: CdkDragDrop<any[]>) {
     const bill = event.previousContainer.data[event.previousIndex]; // Obtener la factura arrastrada
     
-    // Verificar que el contenedor de destino no sea el mismo
     if (event.previousContainer !== event.container) {
       // Si es un movimiento a un proyecto, encontrar el proyecto correspondiente
       if (event.container.id === 'projectList') {
-        const targetProject = this.projects.find(p => p.bills === event.container.data);
-        
+        const targetProject = this.projects.find(p => p.id === event.container.id);
+  
         if (targetProject) {
           if (!targetProject.bills) {
             targetProject.bills = [];
           }
   
-          // Agregar el bill al nuevo proyecto
+          // Asignamos la factura al proyecto
           targetProject.bills.push(bill);
   
-          // Eliminar el bill de la lista original
-          event.previousContainer.data.splice(event.previousIndex, 1);
-          
-          // Forzar detección de cambios
+          // Actualizamos la factura con el idProject correspondiente en Firebase
+          this.firebaseService.updateBill(bill.id, { idProject: targetProject.id });
+  
+          // Eliminar la factura de la lista de facturas disponibles
+          this.bills = this.bills.filter(b => b.id !== bill.id);
+  
+          // Forzar la actualización de la vista
           this.bills = [...this.bills];
-          
-          console.log(`Bill ${bill.id} moved to project ${targetProject.id}`);
+  
+          console.log(`Factura ${bill.id} movida al proyecto ${targetProject.id}`);
         }
       } else {
-        // Si es un movimiento entre bills, simplemente actualizar la lista de facturas
+        // Si es un movimiento entre facturas, simplemente actualizar la lista
         moveItemInArray(this.bills, event.previousIndex, event.currentIndex);
       }
     }
   }
   
+
+  // Maneja el evento de eliminación de un bill
+  onBillDeleted(billId: string) {
+    // Eliminar el bill localmente de la lista
+    this.bills = this.bills.filter(bill => bill.id !== billId);
+
+    // Forzar la actualización de la vista (no necesario si las referencias son cambiadas)
+    console.log('Updated bills:', this.bills);
+  }
   
 }

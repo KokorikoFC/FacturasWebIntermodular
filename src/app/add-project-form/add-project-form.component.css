@@ -2,26 +2,52 @@
   max-width: 600px;
   margin: 20px auto;
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: beige;
 }
 
+h2{
+  margin-bottom: 50px;
+}
 .form-group {
   margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-weight: bold;
 }
-
-.form-group input[type="text"] {
+.form-group input {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.technology-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: all 0.1s ease-in-out;
+  
+}
+
+.technology-item:hover {
+  transform: scale(1.05);
+}
+
+.technology-image {
+  width: 50px;
+  height: 50px;
+}
+
+.technology-item.selected {
+  background-color:#1e1e1ec1; /* Color de selección */
+  color: white;
 }
 
 .technologies-grid {
@@ -30,15 +56,7 @@
   gap: 10px;
 }
 
-.technology-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 5px;
-}
+
 
 .technology-item label {
   display: flex;
@@ -55,11 +73,16 @@
 
 .submit-button {
   padding: 10px 20px;
-  background-color: #007bff;
+  width: 100%;
+  background-color: #e85d56;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #47484a;
 }
 
 .error-message {

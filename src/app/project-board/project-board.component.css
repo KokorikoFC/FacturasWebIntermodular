@@ -1,41 +1,47 @@
 .project-board-container {
-	width: 350px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	padding: 15px;
-	margin-bottom: 10px;
-	background-color: white;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: white;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .project-board-container h3 {
-	margin-top: 0;
-	margin-bottom: 10px;
-	color: #333;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .project-board-container p {
-	margin: 5px 0;
-	color: #555;
+  margin: 5px 0;
+  color: #555;
 }
 
 .project-list-cont {
-	border: 2px solid #cb6262;
-	border-radius: 5px;
-	min-height: 50px;
-	width: 100%;
-	height: 250px;
-	overflow-y: scroll;
-	scrollbar-width: none; 
-	-ms-overflow-style: none;
-	padding: 10px;
+  border: 2px solid #cb6262;
+  border-radius: 5px;
+  min-height: 50px;
+  width: 100%;
+  height: 250px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 10px;
 }
-.technologies-grid{
-	display: flex;
-	justify-content:flex-start;
-	flex-wrap: wrap;
-	gap: 20px;
+.technologies-grid {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
 }
-.technologies-grid img{
-	height: 50px;
+.technologies-grid img {
+  height: 50px;
+}
+
+/* Evita el scroll cuando se mueve un item */
+.cdk-drag-preview,
+.cdk-drag-animating {
+  overflow: hidden;
 }
