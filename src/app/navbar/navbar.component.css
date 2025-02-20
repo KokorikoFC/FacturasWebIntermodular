@@ -1,17 +1,28 @@
-.fixed-left {
+
+.navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh; /* Ajusta la altura según necesites */
-    width: auto; /* Ancho automático según el contenido */
-    padding-top: 20px; /* Ajusta el espacio superior si es necesario */
+    height: 100%;
+    max-height: 100%;
+    width: 150px; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #47484a;
+    color: whte;
   }
   
   .navbar-nav {
-    flex-direction: column; /* Para que los items estén en vertical */
+    flex-direction: column; 
   }
   
   .content {
-    margin-left: 200px; /* Ajusta este valor según el ancho de tu navbar */
+    margin-left: 200px; 
     padding: 20px;
+  }
+  .navbar li a{
+    color: white;
+  }
+  .navbar p{
+    color: white;
   }

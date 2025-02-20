@@ -1,4 +1,4 @@
-<div class="bill-card-container">
+<div class="bill-card-container" cdkDrag [cdkDragData]="bill">
     <div *ngIf="bill; else noBill">
       <h3>{{ bill.name }}</h3>
       <p>Description: {{ bill.description }}</p>

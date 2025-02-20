@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core'; // Import Input
 import { CommonModule } from '@angular/common';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-bill-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,DragDropModule],
   templateUrl: './bill-card.component.html',
   styleUrl: './bill-card.component.css'
 })
