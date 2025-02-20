@@ -1,29 +1,28 @@
 .project-management-content {
-  width: 70%;
-  height: 100%;
-  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  padding-left: 150px;
+  border: 2px solid black;
+  color: #47484a;
+  overflow: hidden;
 }
 
-/* ... (Existing styles for project-management.component.css - keep these) ... */
-
+.welcome-message {
+  font-size: 32px;
+}
 /* Modal Overlay */
 .modal-overlay {
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top - make sure it's a high value */
+  position: fixed;
+  z-index: 1000;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Black w/ 50% opacity (adjust as needed) */
-  display: flex; /* Enable flexbox for centering */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Modal Content */
@@ -32,10 +31,9 @@
   padding: 20px;
   border: 1px solid #888;
   border-radius: 5px;
-  width: 80%; /* Adjust width as needed */
-  max-width: 600px; /* Maximum width */
-  position: relative; /* Position relative for close button */
-  /* Remove margin: 15% auto; - Flexbox centering handles this */
+  width: 80%; 
+  max-width: 600px; 
+  position: relative;
 }
 
 /* Close Button */
@@ -58,10 +56,53 @@
   cursor: pointer;
 }
 
-.content-container{
+.content-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  height: 100vh;
 }
-.project-boards-container, .bill-cards-container {
+
+.project-title-cont {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.project-title-cont button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 100px;
+  background-color: #e85d56;
+}
+
+.project-boards-container {
+  width: 75%;
+  height: 80vh;
+}
+
+.project-container {
+  border: 2px solid black;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.bill-cards-container {
+  border: 2px solid rgb(203, 140, 140);
+  width: 25%;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.project-boards-container,.bill-cards-container{
+  height: 100vh;
 }

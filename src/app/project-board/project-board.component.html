@@ -16,8 +16,8 @@
       </div>
     </div>
 
-    <!-- Contenedor donde los bills se pueden soltar -->
     <!-- Contenedor para Bills dentro de los proyectos -->
+    <h5>Facturas:</h5>
     <div
       class="project-list-cont"
       cdkDropList
@@ -25,12 +25,17 @@
       [cdkDropListData]="project.bills"
       [cdkDropListConnectedTo]="['billsList']"
     >
-      <h4>Bills for {{ project.name }}</h4>
-      <div *ngFor="let bill of project.bills">
-        <app-bill-card [bill]="bill" cdkDrag></app-bill-card>
-      </div>
+      <ng-container *ngIf="project.bills && project.bills.length > 0; else noBills">
+        <div *ngFor="let bill of project.bills">
+          <app-bill-card [bill]="bill" cdkDrag></app-bill-card>
+        </div>
+      </ng-container>
     </div>
   </div>
+
+  <ng-template #noBills>
+    <p>No hay facturas en este proyecto.</p>
+  </ng-template>
 
   <ng-template #noProject>
     <p>No project data available.</p>
