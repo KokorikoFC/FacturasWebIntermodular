@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { getFirestore, collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'; // Import doc, getDoc, and addDoc
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc } from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
 
 @Injectable({
   providedIn: 'root'
@@ -47,21 +47,6 @@ export class FirebaseService {
     return this.auth.signOut();
   }
 
-  // Método para obtener los bills del usuario autenticado
-  async getBillsForCurrentUser(): Promise<any[]> {
-    const user: User | null = this.auth.currentUser;
-    if (!user) {
-      return []; // No hay usuario autenticado
-    }
-
-    const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
-    const querySnapshot = await getDocs(billsCollection);
-    const bills: any[] = [];
-    querySnapshot.forEach((doc) => {
-      bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
-    });
-    return bills;
-  }
 
   // Método para obtener los datos del documento del usuario
   async getUserData(userId: string): Promise<any> {
@@ -92,4 +77,51 @@ export class FirebaseService {
       technologies: technologies,
     });
   }
+
+    // Método para obtener los bills del usuario autenticado
+    async getBillsForCurrentUser(): Promise<any[]> {
+      const user: User | null = this.auth.currentUser;
+      if (!user) {
+        return []; // No hay usuario autenticado
+      }
+  
+      const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
+      const querySnapshot = await getDocs(billsCollection);
+      const bills: any[] = [];
+      querySnapshot.forEach((doc) => {
+        bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
+      });
+      return bills;
+    }
+
+    async updateBill(billId: string, data: any): Promise<void> {
+      const user: User | null = this.auth.currentUser;
+      if (!user) {
+        return Promise.reject('No user logged in'); // Asegúrate de manejar el caso de no estar logueado
+      }
+    
+      const billDocRef = doc(this.db, `user/${user.uid}/bill`, billId); // Ruta correcta a la factura
+    
+      // Realiza la actualización
+      return updateDoc(billDocRef, data);
+    }
+
+    
+      // Método para obtener los bills del usuario autenticado
+  async getProjectsForCurrentUser(): Promise<any[]> {
+    const user: User | null = this.auth.currentUser;
+    if (!user) {
+      return []; // No hay usuario autenticado
+    }
+
+    const projectCollection = collection(this.db, `user/${user.uid}/project`); // Path a la colección de bills del usuario
+    const querySnapshot = await getDocs(projectCollection);
+    const projects: any[] = [];
+    querySnapshot.forEach((doc) => {
+      console.log("Project doc data:", doc.data());
+      projects.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
+    });
+    return projects;
+  }
+
 }

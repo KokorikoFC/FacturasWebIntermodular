@@ -1,29 +1,45 @@
 <div class="add-project-form-container">
-    <h2>Add New Project</h2>
-  
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-  
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="projectName">Project Name:</label>
-        <input type="text" id="projectName" name="projectName" [(ngModel)]="projectName" required>
-      </div>
-  
-      <div class="form-group">
-        <label>Technologies:</label>
-        <div class="technologies-grid">
-          <div *ngFor="let tech of availableTechnologies" class="technology-item">
-            <input type="checkbox" id="{{tech.name}}" name="technologies" value="{{tech.name}}"
-                   (change)="toggleTechnology(tech.name)" [checked]="isSelected(tech.name)">
-            <label for="{{tech.name}}">
-              <img [src]="tech.image" alt="{{tech.name}}" class="technology-image">
-              <span>{{ tech.name }}</span>
-            </label>
-          </div>
+  <h2>Add New Project</h2>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="projectName">Project Name:</label>
+      <input
+        type="text"
+        id="projectName"
+        name="projectName"
+        [(ngModel)]="projectName"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Technologies:</label>
+      <div class="technologies-grid">
+        <div *ngFor="let tech of availableTechnologies" class="technology-item">
+          <input
+            type="checkbox"
+            id="{{ tech.name }}"
+            name="technologies"
+            value="{{ tech.name }}"
+            (change)="toggleTechnology(tech.name)"
+            [checked]="isSelected(tech.name)"
+          />
+          <label for="{{ tech.name }}">
+            <img
+              [src]="tech.image"
+              alt="{{ tech.name }}"
+              class="technology-image"
+            />
+            <span>{{ tech.name }}</span>
+          </label>
         </div>
       </div>
-  
-      <button type="submit" class="submit-button">Save Project</button>
-    </form>
-  </div>
+    </div>
+
+    <button type="submit" class="submit-button">Save Project</button>
+  </form>
+</div>

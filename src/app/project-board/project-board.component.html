@@ -1,0 +1,38 @@
+<!-- project-board.component.html -->
+<div class="project-board-container">
+  <div *ngIf="project; else noProject">
+    <h3>{{ project.name }}</h3>
+    <p>Technologies:</p>
+    <div class="technologies-grid">
+      <div *ngFor="let tech of availableTechnologies" class="technology-item">
+        <label for="{{ tech.name }}">
+          <img
+            [src]="tech.image"
+            alt="{{ tech.name }}"
+            class="technology-image"
+          />
+          <span>{{ tech.name }}</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Contenedor donde los bills se pueden soltar -->
+    <!-- Contenedor para Bills dentro de los proyectos -->
+    <div
+      class="project-list-cont"
+      cdkDropList
+      (cdkDropListDropped)="onBillDroppedToProject($event)"
+      [cdkDropListData]="project.bills"
+      [cdkDropListConnectedTo]="['billsList']"
+    >
+      <h4>Bills for {{ project.name }}</h4>
+      <div *ngFor="let bill of project.bills">
+        <app-bill-card [bill]="bill" cdkDrag></app-bill-card>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noProject>
+    <p>No project data available.</p>
+  </ng-template>
+</div>
