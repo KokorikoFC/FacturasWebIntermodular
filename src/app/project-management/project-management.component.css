@@ -31,8 +31,8 @@
   padding: 20px;
   border: 1px solid #888;
   border-radius: 5px;
-  width: 80%; 
-  max-width: 600px; 
+  width: 80%;
+  max-width: 600px;
   position: relative;
 }
 
@@ -92,8 +92,9 @@
   justify-content: space-around;
   flex-wrap: wrap;
   overflow-y: scroll;
-  scrollbar-width: none; 
+  scrollbar-width: none;
   -ms-overflow-style: none;
+  padding-bottom: 150px;
 }
 
 .bill-cards-container {
@@ -103,6 +104,13 @@
   overflow-y: scroll;
 }
 
-.project-boards-container,.bill-cards-container{
+.project-boards-container,
+.bill-cards-container {
   height: 100vh;
+}
+
+/* Evita el scroll cuando se mueve un item */
+.cdk-drag-preview,
+.cdk-drag-animating {
+  overflow: hidden;
 }

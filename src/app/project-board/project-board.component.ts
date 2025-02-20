@@ -57,4 +57,6 @@ export class ProjectBoardComponent {
 
     console.log(`Bill ${bill.id} moved to project ${targetProject.id}`);
   }
+
+  
 }
