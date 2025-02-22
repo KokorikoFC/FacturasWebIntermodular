@@ -35,15 +35,6 @@ export class LoginComponent {
   }
 
   register() {
-    this.firebaseService.registerUser(this.email, this.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('Usuario registrado', user);
-        // Redirige al dashboard tras registro exitoso (opcional, si quieres)
-        // this.router.navigate(['/dashboard']);
-      })
-      .catch((error) => {
-        console.error('Error al registrar:', error.message);
-      });
+    this.router.navigate(['/register']);
   }
 }
