@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc,deleteDoc } from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
+import { getFirestore, Firestore, collection, getDocs, doc, getDoc, setDoc, addDoc, updateDoc,deleteDoc } from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,12 @@ export class FirebaseService {
   // Método para registrar un nuevo usuario
   registerUser(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
+  }
+
+  // Método para crear un documento de usuario en Firestore
+  async createUserDocument(userId: string, userData: any) {
+    const userDocRef = doc(this.db, `user/${userId}`); // 'users' es el nombre de tu colección
+    await setDoc(userDocRef, userData);
   }
 
   // Método para hacer login
