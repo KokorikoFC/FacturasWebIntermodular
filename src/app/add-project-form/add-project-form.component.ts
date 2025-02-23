@@ -44,28 +44,24 @@ export class AddProjectFormComponent {
 
   onSubmit() {
     if (!this.projectName) {
-      this.errorMessage = 'Project name is required.';
+      this.errorMessage = 'Debe ingresar un nombre de proyecto.';
       this.successMessage = '';
       return;
     }
   
     if (this.selectedTechnologies.length === 0) {
-      this.errorMessage = 'Please select at least one technology.';
+      this.errorMessage = 'Debe seleccionar al menos una tecnología.';
       this.successMessage = '';
       return;
     }
   
-    this.errorMessage = '';
-    this.successMessage = 'Saving project...';
   
     this.firebaseService.addProjectForCurrentUser(this.projectName, this.selectedTechnologies)
       .then((newProject) => {
-        this.successMessage = 'Project saved successfully!';
-        this.errorMessage = '';
         this.projectName = '';
         this.selectedTechnologies = [];
   
-        // 🔥 Emitir el proyecto completo para que aparezca en la lista al instante
+        // Emitir el proyecto completo para que aparezca en la lista al instante
         this.projectAdded.emit(newProject); 
       })
       .catch((error) => {

@@ -2,7 +2,7 @@
 <div class="project-board-container">
   <div *ngIf="project; else noProject">
     <h3>{{ project.name }}</h3>
-    <p>Technologies:</p>
+    <h5>Tecnologías:</h5>
     <div class="technologies-grid">
       <div *ngFor="let tech of project.technologies" class="technology-item">
         <label for="{{ tech }}">

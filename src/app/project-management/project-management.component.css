@@ -2,7 +2,6 @@
   width: 100%;
   height: 100vh;
   padding-left: 150px;
-  border: 2px solid black;
   color: #47484a;
   overflow: hidden;
 }
@@ -32,7 +31,7 @@
 .modal-content {
   background-color: #fffbf8;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 20px;
   width: 80%;
   max-width: 600px;
   position: relative;
@@ -42,8 +41,8 @@
 .close-button {
   color: #aaa;
   position: absolute;
-  top: 10px; /* Adjust position as needed */
-  right: 10px; /* Adjust position as needed */
+  top: 10px; 
+  right: 10px; 
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
@@ -56,6 +55,7 @@
   color: black;
   text-decoration: none;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .content-container {
@@ -93,44 +93,83 @@
 }
 .close-button:hover{
   color: #e85d56;
+  transition: all 0.2s ease;
 }
 
 .project-boards-container {
   width: 75%;
   height: 100vh;
-  border: 2px solid black;
-}
-
-.project-container {
-  border: 2px solid black;
-  width: 100%;
-  height: 80%;
-  display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding-bottom: 150px;
+  padding: 50px 30px 100px 30px;
+  margin: auto;
 }
 
-.bill-cards-container {
-  border: 2px solid rgb(203, 140, 140);
+.project-container {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.bills-container{
   width: 25%;
-  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 25px;
+  border-left: 1px dotted #47484a;
+  background-color: #cfc6b5ab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.bills-container h3{
+  width: 100%;
+}
+.bill-cards-container {
+  width: 100%;
+  height: 80vh;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 20px;
-}
-
-.project-boards-container,
-.bill-cards-container {
-  height: 100vh;
+  background-color: #f5f2edc8;
+  border-radius: 15px;
+  margin-top: 20px;
 }
 
 /* Evita el scroll cuando se mueve un item */
 .cdk-drag-preview,
 .cdk-drag-animating {
   overflow: hidden;
+}
+
+.circle1{
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background-color: #e85d56;
+  opacity: 0.6;
+  position: fixed;
+  z-index: -1;
+  bottom: -100px;
+  left: 0;
+}
+.circle2{
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background-color: #e85d56;
+  opacity: 0.6;
+  position: fixed;
+  z-index: -1;
+  top: -100px;
+  right: -100px;
 }

@@ -1,27 +1,25 @@
 .project-board-container {
   width: 350px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 20px;
   padding: 15px;
   margin-bottom: 10px;
   background-color: white;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #333;
 }
 
 .project-board-container h3 {
   margin-top: 0;
   margin-bottom: 10px;
   color: #333;
+  text-align: center;
 }
 
-.project-board-container p {
-  margin: 5px 0;
-  color: #555;
+.project-board-container h5{
+  margin-top: 15px;
 }
-
 .project-list-cont {
-  border: 2px solid #cb6262;
-  border-radius: 5px;
+  border-radius: 10px;
   min-height: 50px;
   width: 100%;
   height: 250px;
@@ -29,12 +27,23 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 10px;
+  background: #f5f2ed;
+
 }
 .technologies-grid {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
+  height: 140px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border: 1px dashed #47484a;
+  border-radius: 10px;
+  padding: 10px;
+  justify-content: space-around;
 }
 .technologies-grid img {
   height: 50px;
@@ -44,4 +53,17 @@
 .cdk-drag-preview,
 .cdk-drag-animating {
   overflow: hidden;
+}
+
+.technology-item label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 80px;
+  padding: 5px;
+  border-radius: 10px;
+  background: #cfc6b5;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
