@@ -2,19 +2,20 @@
 <div class="project-board-container">
   <div *ngIf="project; else noProject">
     <h3>{{ project.name }}</h3>
-    <p>Technologies:</p>
+    <h5>Tecnologías:</h5>
     <div class="technologies-grid">
-      <div *ngFor="let tech of availableTechnologies" class="technology-item">
-        <label for="{{ tech.name }}">
+      <div *ngFor="let tech of project.technologies" class="technology-item">
+        <label for="{{ tech }}">
           <img
-            [src]="tech.image"
-            alt="{{ tech.name }}"
+            [src]="getTechnologyImage(tech)"
+            alt="{{ tech }}"
             class="technology-image"
           />
-          <span>{{ tech.name }}</span>
+          <span>{{ tech }}</span>
         </label>
       </div>
     </div>
+    
 
     <!-- Contenedor para Bills dentro de los proyectos -->
     <h5>Facturas:</h5>

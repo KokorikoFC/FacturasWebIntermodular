@@ -174,5 +174,12 @@ export class ProjectManagementComponent implements OnInit {
     // Forzar la actualización de la vista (no necesario si las referencias son cambiadas)
     console.log('Updated bills:', this.bills);
   }
+
+  addProject(newProject: any) {
+    this.projects = [...this.projects, newProject]; // Añadir el proyecto al array actual
+    this.closeAddProjectForm(); // Cerrar el popup
+    console.log('Nuevo proyecto añadido:', newProject);
+  }
+  
   
 }

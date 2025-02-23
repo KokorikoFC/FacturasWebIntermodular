@@ -73,16 +73,39 @@ export class FirebaseService {
   async addProjectForCurrentUser(projectName: string, technologies: string[]): Promise<any> {
     const user = this.auth.currentUser;
     if (!user) {
-      throw new Error('No user logged in.'); // Or handle unauthenticated state appropriately
+      throw new Error('No user logged in.');
     }
   
-    const projectsCollection = collection(this.db, `user/${user.uid}/project`); // Path to projects subcollection (singular 'project')
+    const projectsCollection = collection(this.db, `user/${user.uid}/project`);
   
-    return await addDoc(projectsCollection, { // Use addDoc to add a new document
+    // Agregar el proyecto y devolver el ID
+    const docRef = await addDoc(projectsCollection, {
       name: projectName,
       technologies: technologies,
     });
+  
+    // 🔥 Obtener el proyecto completo con el ID generado
+    const newProject = await this.getProjectById(docRef.id);
+  
+    return newProject; // Devolver el proyecto completo
   }
+  
+  async getProjectById(projectId: string): Promise<any> {
+    const user: User | null = this.auth.currentUser;
+    if (!user) {
+      throw new Error('No user logged in');
+    }
+  
+    const projectDocRef = doc(this.db, `user/${user.uid}/project`, projectId);
+    const projectSnapshot = await getDoc(projectDocRef);
+  
+    if (projectSnapshot.exists()) {
+      return { id: projectSnapshot.id, ...projectSnapshot.data() };
+    } else {
+      throw new Error('Project not found');
+    }
+  }
+  
 
     // Método para obtener los bills del usuario autenticado
     async getBillsForCurrentUser(): Promise<any[]> {

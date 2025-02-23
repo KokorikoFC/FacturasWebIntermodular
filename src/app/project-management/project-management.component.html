@@ -1,7 +1,9 @@
 <app-navbar></app-navbar>
 
-<div class="project-management-content">
+<div class="circle1"></div>
+<div class="circle2"></div>
 
+<div class="project-management-content">
   <div class="content-container" cdkDropListGroup>
     <!-- Lista de Projects -->
     <div class="project-boards-container">
@@ -12,7 +14,7 @@
         </p>
       </div>
       <div *ngIf="!currentUserEmail">
-        <p class="welcome-message"><strong>No user logged in.</strong></p>
+        <p class="welcome-message"><strong>No hay ningún usuario logueado.</strong></p>
       </div>
       <div class="project-title-cont">
         <h3>Tus proyectos</h3>
@@ -26,7 +28,9 @@
             <button (click)="closeAddProjectForm()" class="close-button">
               X
             </button>
-            <app-add-project-form></app-add-project-form>
+            <app-add-project-form
+              (projectAdded)="addProject($event)"
+            ></app-add-project-form>
           </div>
         </div>
       </div>
@@ -37,33 +41,36 @@
           </div>
         </ng-container>
         <ng-template #noProjects>
-          <p>No projects available.</p>
+          <p>No hay proyectos disponibles.</p>
         </ng-template>
       </div>
     </div>
 
     <!-- Lista de Bills (Con arrastre habilitado) -->
-    <div
-      class="bill-cards-container"
-      cdkDropList
-      id="billsList"
-      (cdkDropListDropped)="dropBill($event)"
-      [cdkDropListData]="bills"
-      [cdkDropListConnectedTo]="['projectList']"
-    >
+    <div class="bills-container">
       <h3>Tus facturas</h3>
-      <ng-container *ngIf="bills.length > 0; else noBills">
-        <app-bill-card
-          *ngFor="let bill of bills"
-          [bill]="bill"
-          cdkDrag
-          [cdkDragData]="bill"
-          (billDeleted)="onBillDeleted($event)"
-        ></app-bill-card>
-      </ng-container>
-      <ng-template #noBills>
-        <p>No bills available.</p>
-      </ng-template>
+      <div
+        class="bill-cards-container"
+        cdkDropList
+        id="billsList"
+        (cdkDropListDropped)="dropBill($event)"
+        [cdkDropListData]="bills"
+        [cdkDropListConnectedTo]="['projectList']"
+      >
+
+        <ng-container *ngIf="bills.length > 0; else noBills">
+          <app-bill-card
+            *ngFor="let bill of bills"
+            [bill]="bill"
+            cdkDrag
+            [cdkDragData]="bill"
+            (billDeleted)="onBillDeleted($event)"
+          ></app-bill-card>
+        </ng-container>
+        <ng-template #noBills>
+          <p>No hay facturas disponibles.</p>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>

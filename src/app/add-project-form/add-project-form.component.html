@@ -1,9 +1,5 @@
 <div class="add-project-form-container">
   <h2>Añade un nuevo proyecto</h2>
-
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="projectName">Nombre del proyecto:</label>
@@ -19,10 +15,10 @@
     <div class="form-group">
       <label>Tecnologías:</label>
       <div class="technologies-grid">
-        <div 
-          *ngFor="let tech of availableTechnologies" 
-          class="technology-item" 
-          [class.selected]="isSelected(tech.name)" 
+        <div
+          *ngFor="let tech of availableTechnologies"
+          class="technology-item"
+          [class.selected]="isSelected(tech.name)"
           (click)="toggleTechnology(tech.name)"
         >
           <img
@@ -34,7 +30,12 @@
         </div>
       </div>
     </div>
-    
+    <div class="error-container">
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+    </div>
     <button type="submit" class="submit-button">Guardar proyecto</button>
   </form>
 </div>
