@@ -23,12 +23,11 @@
 
         <div *ngIf="isAddProjectFormVisible" class="modal-overlay">
           <div class="modal-content">
-            <button (click)="closeAddProjectForm()" class="close-button">
-              X
-            </button>
-            <app-add-project-form></app-add-project-form>
+            <button (click)="closeAddProjectForm()" class="close-button">X</button>
+            <app-add-project-form (projectAdded)="addProject($event)"></app-add-project-form>
           </div>
         </div>
+        
       </div>
       <div class="project-container">
         <ng-container *ngIf="projects.length > 0; else noProjects">

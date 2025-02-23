@@ -58,5 +58,10 @@ export class ProjectBoardComponent {
     console.log(`Bill ${bill.id} moved to project ${targetProject.id}`);
   }
 
+  getTechnologyImage(techName: string): string {
+    const tech = this.availableTechnologies.find((t) => t.name === techName);
+    return tech ? tech.image : 'assets/images/default.png'; // Imagen por defecto si no la encuentra
+  }
+  
   
 }
