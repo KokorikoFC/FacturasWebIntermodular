@@ -83,17 +83,49 @@ body {
     font-size: 2.5em;
     letter-spacing: 0.5px;
   }
+
+  .form-group {
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 100%;
+  }
   
-  input {
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1em;
+  }
+
+  input[type="email"],
+  input[type="password"] {
     width: 100%;
     padding: 10px;
+    margin-bottom: 0px;
     border: 2px solid #ccc;
     border-radius: 7px;
-    margin-bottom: 20px;
     font-size: 1.1em;
     color: #47484a;
     background-color: #fff;
     box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.08);
+  }
+  
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+      border-color: #e85d56;
+      outline: none;
+      box-shadow: 0 0 8px rgba(232, 93, 86, 0.8);
+  }
+
+  .validation-error {
+    color: orange;
+    font-size: 0.9em;
+    margin-bottom: 6px;
+    z-index: 1;
+    position: relative;
   }
   
   button {

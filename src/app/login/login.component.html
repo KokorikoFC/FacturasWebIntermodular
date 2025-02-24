@@ -1,11 +1,27 @@
 <div class="wrapper">
   <div class="login-container">
     <h2>Login</h2>
-    <input [(ngModel)]="email" type="email" placeholder="Email" />
-    <input [(ngModel)]="password" type="password" placeholder="Password" />
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" [(ngModel)]="email" #emailInput="ngModel" required email>
+      <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="validation-error">
+          <div *ngIf="emailInput.errors?.['required']">Email es obligatorio.</div>
+          <div *ngIf="emailInput.errors?.['email']">Email no válido.</div> 
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" #passwordInput="ngModel"
+          required minlength="6">
+      <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)"
+          class="validation-error">
+          <div *ngIf="passwordInput.errors?.['required']">Contraseña es obligatoria.</div>
+          <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
+      </div> 
+    </div>
     <button (click)="login()">Login</button>
     <div class="register-link">
       <a routerLink="/register">¿No tienes una cuenta? Regístrate</a>
-  </div>
+    </div>
   </div>
 </div>
