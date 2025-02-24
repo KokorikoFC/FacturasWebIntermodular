@@ -1,1 +1,18 @@
-<p>professional-itineraries works!</p>
+<h1>Itinerario Profesional</h1>
+
+<label for="itinerarySelect">Selecciona un perfil:</label>
+<select
+  id="itinerarySelect"
+  (change)="onItineraryChange($event)"
+  *ngIf="itineraries.length > 0"
+>
+  <option value="" disabled selected>Selecciona un itinerario</option>
+  <option *ngFor="let itinerary of itineraries" [value]="itinerary.id">
+    {{ itinerary.id }}
+  </option>
+</select>
+
+<div id="chart"></div>
+
+<div *ngIf="loadingData">Cargando datos...</div>
+<div *ngIf="itineraries.length === 0 && !loadingData">No hay itinerarios disponibles.</div>

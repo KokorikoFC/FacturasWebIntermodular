@@ -198,7 +198,7 @@ export class FirebaseService {
         this.db,
         'professional_itineraries',
         itineraryId,
-        'tecnologies'
+        'technologies'
       );
       const techSnapshot = await getDocs(techRef);
 
