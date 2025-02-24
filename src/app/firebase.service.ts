@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import {
   getFirestore,
+  writeBatch,
   Firestore,
   collection,
   getDocs,
@@ -17,6 +18,8 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  query, // Import query
+  where, // Import where
 } from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
 
 @Injectable({
@@ -34,7 +37,7 @@ export class FirebaseService {
 
   private app: any;
   private auth: any;
-  private db: any; // Firestore database
+  private db: any;
 
   constructor() {
     // Inicializa Firebase
@@ -87,7 +90,7 @@ export class FirebaseService {
 
   async addProjectForCurrentUser(
     projectName: string,
-    technologies: string[]
+    technologies: string[] 
   ): Promise<any> {
     const user = this.auth.currentUser;
     if (!user) {
@@ -171,7 +174,7 @@ export class FirebaseService {
       return []; // No hay usuario autenticado
     }
 
-    const projectCollection = collection(this.db, `user/${user.uid}/project`); // Path a la colección de bills del usuario
+    const projectCollection = collection(this.db, `user/${user.uid}/project`); // Path a la colección de proyectos del usuario
     const querySnapshot = await getDocs(projectCollection);
     const projects: any[] = [];
     querySnapshot.forEach((doc) => {
@@ -218,5 +221,47 @@ export class FirebaseService {
     return itineraries;
   }
 
+  // Método para obtener las tecnologías del usuario
+  async getUserTechnologies(userId: string): Promise<any[]> {
+    const user = this.auth.currentUser;
+    if (!user || user.uid !== userId) {
+      throw new Error('No user logged in or invalid user ID');
+    }
+
+    const technologiesCollectionRef = collection(this.db, `user/${userId}/userTechnologies`);
+    const technologiesSnapshot = await getDocs(technologiesCollectionRef);
+    
+    const technologies: any[] = [];
+    technologiesSnapshot.forEach((techDoc) => {
+      technologies.push({
+        id: techDoc.id, // El id es el nombre de la tecnología (por ejemplo: HTML)
+        ...techDoc.data(), // Obtiene todos los campos del documento
+      });
+    });
+
+    return technologies;
+  }
+
+  // Método para actualizar las tecnologías del usuario
+  async updateUserTechnologies(userId: string, technologies: any[]): Promise<void> {
+    const user = this.auth.currentUser;
+    if (!user || user.uid !== userId) {
+      throw new Error('No user logged in or invalid user ID');
+    }
+  
+    const batch = writeBatch(this.db);
+    const technologiesCollectionRef = collection(this.db, `user/${userId}/userTechnologies`);
+  
+    // Recorremos las tecnologías y actualizamos cada una
+    technologies.forEach((tech) => {
+      const { id, ...techWithoutId } = tech; // Desestructuramos el objeto para excluir la propiedad 'id'
+  
+      const techDocRef = doc(this.db, `user/${userId}/userTechnologies/${tech.id}`);
+      batch.set(techDocRef, techWithoutId); // Usamos set pero sin la propiedad 'id'
+    });
+  
+    // Ejecutamos el batch para actualizar todo al mismo tiempo
+    await batch.commit();
+  }
   
 }

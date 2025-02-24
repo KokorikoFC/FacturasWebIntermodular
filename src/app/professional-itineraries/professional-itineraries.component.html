@@ -1,11 +1,7 @@
 <h1>Itinerario Profesional</h1>
 
 <label for="itinerarySelect">Selecciona un perfil:</label>
-<select
-  id="itinerarySelect"
-  (change)="onItineraryChange($event)"
-  *ngIf="itineraries.length > 0"
->
+<select id="itinerarySelect" (change)="onItineraryChange($event)" *ngIf="itineraries.length > 0">
   <option value="" disabled selected>Selecciona un itinerario</option>
   <option *ngFor="let itinerary of itineraries" [value]="itinerary.id">
     {{ itinerary.id }}
@@ -16,3 +12,20 @@
 
 <div *ngIf="loadingData">Cargando datos...</div>
 <div *ngIf="itineraries.length === 0 && !loadingData">No hay itinerarios disponibles.</div>
+
+<h2>Ajustar niveles de tecnología</h2>
+
+<form (submit)="saveUserTechnologies()">
+  <div *ngFor="let tech of getUserTechnologiesToDisplay()">
+    <label>{{ tech.id }}</label>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      [(ngModel)]="tech.level"
+      name="{{ tech.id }}"
+    />
+    <span>{{ tech.level }}%</span>
+  </div>
+  <button type="submit">Guardar niveles</button>
+</form>

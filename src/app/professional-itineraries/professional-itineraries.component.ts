@@ -2,30 +2,46 @@ import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/cor
 import { FirebaseService } from '../firebase.service';
 import * as d3 from 'd3';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-professional-itinerarie',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './professional-itineraries.component.html',
-  styleUrl: './professional-itineraries.component.css'
+  styleUrls: ['./professional-itineraries.component.css'],
 })
 export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
   @Input() itineraryData?: any;
   itineraries: any[] = [];
   selectedItinerary: any = null;
   loadingData: boolean = true;
+  userTechnologies: any[] = []; // Para almacenar las tecnologías del usuario
 
   constructor(private firebaseService: FirebaseService) {}
 
   async ngOnInit() {
     this.loadingData = true;
+
+    // Obtener todos los itinerarios
     this.itineraries = await this.firebaseService.getAllItineraries();
 
+    // Si hay itinerarios, seleccionar el primero por defecto
     if (this.itineraries.length > 0) {
       this.selectedItinerary = this.itineraries[0];
       this.drawRadarChart(this.selectedItinerary.technologies);
     }
+
+    // Obtener el ID del usuario autenticado
+    const user = this.firebaseService.getCurrentUser();
+    if (user) {
+      // Si hay un usuario autenticado, obtener sus tecnologías
+      this.userTechnologies = await this.firebaseService.getUserTechnologies(user.uid);
+      console.log('Tecnologías del usuario:', this.userTechnologies);
+    } else {
+      console.error('No user logged in');
+    }
+
     this.loadingData = false;
   }
 
@@ -35,6 +51,7 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
     }
   }
 
+  // Método para manejar el cambio en el itinerario seleccionado
   onItineraryChange(event: any): void {
     const itineraryId = event.target.value;
     this.selectedItinerary = this.itineraries.find(
@@ -43,12 +60,10 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
     this.drawRadarChart(this.selectedItinerary?.technologies || []);
   }
 
+  // Dibuja el gráfico de radar
   drawRadarChart(technologies: any[]): void {
     d3.select('#chart').selectAll('*').remove();
-
     if (!technologies || technologies.length === 0) return;
-
-    console.log("Datos de tecnologías:", technologies); // 👈  AÑADE ESTA LÍNEA
 
     const width = 600;
     const height = 600;
@@ -66,7 +81,6 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
 
     const levels = 5;
     const angleSlice = (2 * Math.PI) / technologies.length;
-
     const scale = d3.scaleLinear().domain([0, 100]).range([0, radius]);
 
     for (let i = 1; i <= levels; i++) {
@@ -99,7 +113,7 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
         .attr('font-size', '12px')
         .attr('text-anchor', 'middle')
         .attr('dy', '0.35em')
-        .style('fill', '#333'); // He puesto el color del texto en gris oscuro (#333)
+        .style('fill', '#333');
     });
 
     const radarLine = d3
@@ -116,9 +130,11 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
       .attr('stroke', '#007bff')
       .attr('stroke-width', 2);
 
-    chartGroup.selectAll('.radarCircle')
+    chartGroup
+      .selectAll('.radarCircle')
       .data(technologies)
-      .enter().append('circle')
+      .enter()
+      .append('circle')
       .attr('class', 'radarCircle')
       .attr('r', 4)
       .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
@@ -126,5 +142,22 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
       .style('fill', '#007bff')
       .style('fill-opacity', 0.8);
   }
-}
 
+  // Método para obtener las tecnologías del usuario y mostrarlas en el formulario
+  getUserTechnologiesToDisplay() {
+    return this.userTechnologies;
+  }
+
+  // Método para guardar las tecnologías ajustadas por el usuario
+  async saveUserTechnologies() {
+    const user = this.firebaseService.getCurrentUser();
+    if (user) {
+      // Actualizar las tecnologías del usuario en la base de datos
+      await this.firebaseService.updateUserTechnologies(user.uid, this.userTechnologies);
+      console.log('Tecnologías actualizadas:', this.userTechnologies);
+      alert('Tecnologías guardadas correctamente.');
+    } else {
+      console.error('No user logged in');
+    }
+  }
+}
