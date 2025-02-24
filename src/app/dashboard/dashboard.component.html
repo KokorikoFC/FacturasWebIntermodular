@@ -1,16 +1,7 @@
-<p>dashboard works!</p>
 <app-navbar></app-navbar>
-
-<style>
-  .dashboard-content {
-    width: 70%;
-    margin: auto;
-  }
-</style>
 
 <div class="dashboard-content">
   <h1>Dashboard</h1>
-  <p>Bienvenido al panel de control.</p>
 
   <div class="year-selector">
     <label for="year">Año:</label>
@@ -19,18 +10,40 @@
     </select>
   </div>
 
-  <div *ngIf="loadingData">
+  <div *ngIf="loadingData" class="loading-data">
     Cargando datos...
   </div>
 
-  <div *ngIf="!loadingData" class="chart-container">
-    <h2>Total de Facturas por Mes ({{ selectedYear }})</h2>
+  <div *ngIf="!loadingData" class="chart-container bar-chart-container">
+    <h3>Total de Ingresos Mensuales ({{ selectedYear }})</h3>
     <app-bar-chart
       [data]="chartData"
       categoryField="month"
       valueField="total"
+      chartTitle="Ingresos por Mes"
     ></app-bar-chart>
   </div>
+
+  <div *ngIf="!loadingData" class="chart-container bar-chart-container">
+    <h3>Total de Ingresos por Cliente ({{ selectedYear }})</h3>
+    <app-bar-chart
+      [data]="chartDataClients"
+      categoryField="category"
+      valueField="total"
+      chartTitle="Ingresos por Cliente"
+    ></app-bar-chart>
+  </div>
+
+    <div *ngIf="!loadingData" class="chart-container bar-chart-container">
+    <h3>Total de Pagos por Proveedor ({{ selectedYear }})</h3>
+    <app-bar-chart
+      [data]="chartDataIssuers"
+      categoryField="category"
+      valueField="total"
+      chartTitle="Pagos por Proveedor"
+    ></app-bar-chart>
+  </div>
+
 
   <div *ngIf="!loadingData" class="consulta-container">
     <h2>Consulta de Saldos de Facturas</h2>

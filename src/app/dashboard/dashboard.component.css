@@ -1,0 +1,130 @@
+/* dashboard.component.css */
+.dashboard-content {
+    width: 100%;
+    height: auto; /* Adjusted height to auto to fit content */
+    padding-left: 300px; /* Kept padding-left */
+    padding-right: 100px; /* Added padding-right for right side margin */
+    color: #47484a;
+    overflow-x: hidden; /* Changed overflow to overflow-x to prevent horizontal scroll if needed */
+    margin-top: 20px; /* Added margin-top for spacing */
+    margin-bottom: 20px;
+  }
+  
+  .welcome-message-cont {
+    height: auto; /* Adjusted height to auto */
+    margin-bottom: 20px;
+  }
+  
+  .welcome-message {
+    font-size: 28px; /* Adjusted font-size to be slightly smaller for dashboard context */
+    color: #2c3e50; /* Using title color for welcome message */
+  }
+  
+  /* Chart and Consulta Containers */
+  .chart-container, .consulta-container, .year-selector {
+    background-color: #fffbf8; /* Modal content background color */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px; /* Rounded corners from modal */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Slightly stronger shadow */
+    border: 1px solid #ddd; /* Added border for better definition */
+  }
+  
+  h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    font-size: 2.2em; /* Adjusted h1 font size */
+  }
+  
+  h2 {
+    color: #e85d56; /* Using button color for subtitles */
+    margin-top: 0;
+    font-size: 1.8em; /* Adjusted h2 font size */
+  }
+  
+  .year-selector label, .consulta-container label {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #47484a; /* Darker label color */
+  }
+  
+  .year-selector select, .consulta-container select {
+    padding: 10px; /* Increased padding for better touch area */
+    border-radius: 10px; /* More rounded select boxes */
+    border: 1px solid #aaa; /* Darker border for select */
+    font-size: 1em; /* Adjusted font size in select */
+  }
+  
+  .chart-container {
+    text-align: center;
+  }
+  
+  .consulta-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .consulta-container th, .consulta-container td {
+    padding: 12px 8px; /* Adjusted padding for table cells */
+    border: 1px solid #ddd;
+    text-align: right;
+    color: #47484a; /* Table text color */
+  }
+  
+  .consulta-container th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: left; /* Aligned header text to left for better readability */
+  }
+  
+  .consulta-container tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Lighter even row background */
+  }
+  
+  .loading-data {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #777;
+  }
+  
+  /* Bar chart container styles */
+  .bar-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px; /* Increased margin bottom for more space */
+  }
+  
+  .bar-chart-container h3 {
+    margin-bottom: 15px;
+    color: #e85d56; /* Subtitle color for chart titles */
+    font-size: 1.6em; /* Adjusted chart title font size */
+  }
+  
+  /* Circles - Optional if you want background circles */
+  .circle1{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: #e85d56;
+    opacity: 0.3; /* Reduced opacity for softer background */
+    position: fixed;
+    z-index: -1;
+    bottom: -100px;
+    left: 0;
+  }
+  .circle2{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background-color: #e85d56;
+    opacity: 0.3; /* Reduced opacity for softer background */
+    position: fixed;
+    z-index: -1;
+    top: -100px;
+    right: -100px;
+  }
