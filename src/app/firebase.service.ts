@@ -1,24 +1,43 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { getFirestore, Firestore, collection, getDocs, doc, getDoc, setDoc, addDoc, updateDoc,deleteDoc } from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  User,
+} from 'firebase/auth';
+import {
+  getFirestore,
+  writeBatch,
+  Firestore,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query, // Import query
+  where, // Import where
+} from 'firebase/firestore'; // Import doc, getDoc, addDoc, and updateDoc
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
   private firebaseConfig = {
-    apiKey: "AIzaSyBMHiU6y_Eq5LZHwdQabnW3H-lFSJ1_N9M",
-    authDomain: "apptrabajadoresautonomos.firebaseapp.com",
-    projectId: "apptrabajadoresautonomos",
-    storageBucket: "apptrabajadoresautonomos.firebasestorage.app",
-    messagingSenderId: "159659703361",
-    appId: "1:159659703361:web:f5e9f05d48669b7b389ac0"
+    apiKey: 'AIzaSyBMHiU6y_Eq5LZHwdQabnW3H-lFSJ1_N9M',
+    authDomain: 'apptrabajadoresautonomos.firebaseapp.com',
+    projectId: 'apptrabajadoresautonomos',
+    storageBucket: 'apptrabajadoresautonomos.firebasestorage.app',
+    messagingSenderId: '159659703361',
+    appId: '1:159659703361:web:f5e9f05d48669b7b389ac0',
   };
 
   private app: any;
   private auth: any;
-  private db: any; // Firestore database
+  private db: any;
 
   constructor() {
     // Inicializa Firebase
@@ -53,7 +72,6 @@ export class FirebaseService {
     return this.auth.signOut();
   }
 
-
   // Método para obtener los datos del documento del usuario
   async getUserData(userId: string): Promise<any> {
     if (!userId) {
@@ -65,106 +83,185 @@ export class FirebaseService {
     if (docSnap.exists()) {
       return docSnap.data(); // Retorna los datos del documento
     } else {
-      console.log("No such document!");
+      console.log('No such document!');
       return null; // No se encontró el documento
     }
   }
 
-  async addProjectForCurrentUser(projectName: string, technologies: string[]): Promise<any> {
+  async addProjectForCurrentUser(
+    projectName: string,
+    technologies: string[] 
+  ): Promise<any> {
     const user = this.auth.currentUser;
     if (!user) {
       throw new Error('No user logged in.');
     }
-  
+
     const projectsCollection = collection(this.db, `user/${user.uid}/project`);
-  
+
     // Agregar el proyecto y devolver el ID
     const docRef = await addDoc(projectsCollection, {
       name: projectName,
       technologies: technologies,
     });
-  
-    // 🔥 Obtener el proyecto completo con el ID generado
+
+    // Obtener el proyecto completo con el ID generado
     const newProject = await this.getProjectById(docRef.id);
-  
+
     return newProject; // Devolver el proyecto completo
   }
-  
+
   async getProjectById(projectId: string): Promise<any> {
     const user: User | null = this.auth.currentUser;
     if (!user) {
       throw new Error('No user logged in');
     }
-  
+
     const projectDocRef = doc(this.db, `user/${user.uid}/project`, projectId);
     const projectSnapshot = await getDoc(projectDocRef);
-  
+
     if (projectSnapshot.exists()) {
       return { id: projectSnapshot.id, ...projectSnapshot.data() };
     } else {
       throw new Error('Project not found');
     }
   }
-  
 
-    // Método para obtener los bills del usuario autenticado
-    async getBillsForCurrentUser(): Promise<any[]> {
-      const user: User | null = this.auth.currentUser;
-      if (!user) {
-        return []; // No hay usuario autenticado
-      }
-  
-      const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
-      const querySnapshot = await getDocs(billsCollection);
-      const bills: any[] = [];
-      querySnapshot.forEach((doc) => {
-        bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
-      });
-      return bills;
+  // Método para obtener los bills del usuario autenticado
+  async getBillsForCurrentUser(): Promise<any[]> {
+    const user: User | null = this.auth.currentUser;
+    if (!user) {
+      return []; // No hay usuario autenticado
     }
 
-    async updateBill(billId: string, data: any): Promise<void> {
-      const user: User | null = this.auth.currentUser;
-      if (!user) {
-        return Promise.reject('No user logged in'); // Asegúrate de manejar el caso de no estar logueado
-      }
-    
-      const billDocRef = doc(this.db, `user/${user.uid}/bill`, billId); // Ruta correcta a la factura
-    
-      // Realiza la actualización
-      return updateDoc(billDocRef, data);
+    const billsCollection = collection(this.db, `user/${user.uid}/bill`); // Path a la colección de bills del usuario
+    const querySnapshot = await getDocs(billsCollection);
+    const bills: any[] = [];
+    querySnapshot.forEach((doc) => {
+      bills.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
+    });
+    return bills;
+  }
+
+  async updateBill(billId: string, data: any): Promise<void> {
+    const user: User | null = this.auth.currentUser;
+    if (!user) {
+      return Promise.reject('No user logged in'); // Asegúrate de manejar el caso de no estar logueado
     }
 
-    async deleteBill(billId: string): Promise<void> {
-      const user: User | null = this.auth.currentUser;
-      if (!user) {
-        return Promise.reject('No user logged in'); // Asegúrate de manejar el caso de no estar logueado
-      }
-    
-      const billDocRef = doc(this.db, `user/${user.uid}/bill`, billId); // Ruta correcta al documento de la factura
-    
-      // Elimina el documento
-      return deleteDoc(billDocRef);
+    const billDocRef = doc(this.db, `user/${user.uid}/bill`, billId); // Ruta correcta a la factura
+
+    // Realiza la actualización
+    return updateDoc(billDocRef, data);
+  }
+
+  async deleteBill(billId: string): Promise<void> {
+    const user: User | null = this.auth.currentUser;
+    if (!user) {
+      return Promise.reject('No user logged in'); // Asegúrate de manejar el caso de no estar logueado
     }
 
+    const billDocRef = doc(this.db, `user/${user.uid}/bill`, billId); // Ruta correcta al documento de la factura
 
-    
-      // Método para obtener los bills del usuario autenticado
+    // Elimina el documento
+    return deleteDoc(billDocRef);
+  }
+
+  // Método para obtener los bills del usuario autenticado
   async getProjectsForCurrentUser(): Promise<any[]> {
     const user: User | null = this.auth.currentUser;
     if (!user) {
       return []; // No hay usuario autenticado
     }
 
-    const projectCollection = collection(this.db, `user/${user.uid}/project`); // Path a la colección de bills del usuario
+    const projectCollection = collection(this.db, `user/${user.uid}/project`); // Path a la colección de proyectos del usuario
     const querySnapshot = await getDocs(projectCollection);
     const projects: any[] = [];
     querySnapshot.forEach((doc) => {
-      console.log("Project doc data:", doc.data());
+      console.log('Project doc data:', doc.data());
       projects.push({ id: doc.id, ...doc.data() }); // Añade el ID del documento y los datos
     });
     return projects;
   }
 
+  //--------------------INTINERARIOS PROFESIONALES--------------------
+
+  async getAllItineraries(): Promise<any[]> {
+    const itineraries: any[] = []; // Definir el array de itinerarios
+    const itinerariesRef = collection(this.db, 'professional_itineraries');
+    const itinerariesSnapshot = await getDocs(itinerariesRef); // Obtener todos los itinerarios
+
+    // Recorrer los itinerarios
+    for (const itineraryDoc of itinerariesSnapshot.docs) {
+      const itineraryId = itineraryDoc.id;
+      const itineraryData = itineraryDoc.data();
+
+      // Obtener la subcolección 'technologies' dentro de cada itinerario
+      const techRef = collection(
+        this.db,
+        'professional_itineraries',
+        itineraryId,
+        'technologies'
+      );
+      const techSnapshot = await getDocs(techRef);
+
+      // Usar map para obtener todas las tecnologías y almacenarlas en un array
+      const technologies = techSnapshot.docs.map((techDoc) => ({
+        id: techDoc.id,
+        ...techDoc.data(),
+      }));
+
+      // Agregar el itinerario con las tecnologías al array itineraries
+      itineraries.push({
+        id: itineraryId,
+        ...itineraryData,
+        technologies: technologies, // Subcolección de tecnologías
+      });
+    }
+    return itineraries;
+  }
+
+  // Método para obtener las tecnologías del usuario
+  async getUserTechnologies(userId: string): Promise<any[]> {
+    const user = this.auth.currentUser;
+    if (!user || user.uid !== userId) {
+      throw new Error('No user logged in or invalid user ID');
+    }
+
+    const technologiesCollectionRef = collection(this.db, `user/${userId}/userTechnologies`);
+    const technologiesSnapshot = await getDocs(technologiesCollectionRef);
+    
+    const technologies: any[] = [];
+    technologiesSnapshot.forEach((techDoc) => {
+      technologies.push({
+        id: techDoc.id, // El id es el nombre de la tecnología (por ejemplo: HTML)
+        ...techDoc.data(), // Obtiene todos los campos del documento
+      });
+    });
+
+    return technologies;
+  }
+
+  // Método para actualizar las tecnologías del usuario
+  async updateUserTechnologies(userId: string, technologies: any[]): Promise<void> {
+    const user = this.auth.currentUser;
+    if (!user || user.uid !== userId) {
+      throw new Error('No user logged in or invalid user ID');
+    }
+  
+    const batch = writeBatch(this.db);
+    const technologiesCollectionRef = collection(this.db, `user/${userId}/userTechnologies`);
+  
+    // Recorremos las tecnologías y actualizamos cada una
+    technologies.forEach((tech) => {
+      const { id, ...techWithoutId } = tech; // Desestructuramos el objeto para excluir la propiedad 'id'
+  
+      const techDocRef = doc(this.db, `user/${userId}/userTechnologies/${tech.id}`);
+      batch.set(techDocRef, techWithoutId); // Usamos set pero sin la propiedad 'id'
+    });
+  
+    // Ejecutamos el batch para actualizar todo al mismo tiempo
+    await batch.commit();
+  }
   
 }

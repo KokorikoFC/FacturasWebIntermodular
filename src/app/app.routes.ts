@@ -5,6 +5,8 @@ import { ProjectManagementComponent } from './project-management/project-managem
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddProjectFormComponent } from './add-project-form/add-project-form.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfessionalItinerariesComponent } from './professional-itineraries/professional-itineraries.component';
+
 
 
 export const routes: Routes = [
@@ -15,5 +17,5 @@ export const routes: Routes = [
   { path: 'projectManagement', component: ProjectManagementComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'addProjectForm', component: AddProjectFormComponent },
-
+  {path:'profesionalItineraries',component:ProfessionalItinerariesComponent},
 ];
