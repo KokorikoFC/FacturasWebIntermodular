@@ -6,7 +6,6 @@
     padding-right: 100px; /* Added padding-right for right side margin */
     color: #47484a;
     overflow-x: hidden; /* Changed overflow to overflow-x to prevent horizontal scroll if needed */
-    margin-top: 20px; /* Added margin-top for spacing */
     margin-bottom: 20px;
   }
   
