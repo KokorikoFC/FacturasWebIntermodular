@@ -28,7 +28,6 @@
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 20px; /* Rounded corners from modal */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
   border: 1px solid #ddd; /* Added border for better definition */
 }
 

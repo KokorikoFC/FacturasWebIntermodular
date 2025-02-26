@@ -5,7 +5,7 @@
   width: 150px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; 
+  align-items: flex-start;
   flex-direction: column;
   background-color: #47484a;
   color: white;
@@ -15,26 +15,34 @@
 .navbar-nav {
   flex-direction: column;
   width: 100%;
-  margin-top: 260px;
+  margin-top: 220px;
+  
 }
 
 .content {
   margin-left: 200px;
   padding: 20px;
 }
-.navbar li a{
+
+.navbar li a {
   color: white;
 }
-.navbar p{
+
+.navbar p {
   color: white;
+  font-size: 1.5em;
+  /* Increased font size */
+  text-align: center;
+  margin-left: 15px;
 }
+
 .bill-cards-container {
   overflow-y: auto;
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 .bill-cards-container::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
 .bottom-nav {
@@ -43,7 +51,7 @@
   padding-bottom: 10px;
 }
 
-.cerrarsersion{
+.cerrarsersion {
   bottom: 0;
   width: 100%;
   background-color: #47484a;
@@ -53,18 +61,27 @@
   margin-top: 230px;
 }
 
-img{
+img {
   width: 50px;
   height: 50px;
   transition: transform 0.3s;
-  }
-
-  img:hover {
-    transform: scale(1.1);
-    cursor: pointer;
 }
 
-.nav-link:hover{
+img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.nav-link:hover {
   text-decoration: underline;
   transition: text-decoration 1s;
+}
+
+hr {
+  width: 80%;
+  border: 2px solid #e85d56;
+  margin: auto;
+  opacity: 1;
+  border-radius: 15%;
+  margin-top: 15px
 }
