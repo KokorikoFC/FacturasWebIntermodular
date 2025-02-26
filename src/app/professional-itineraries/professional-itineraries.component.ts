@@ -3,11 +3,13 @@ import { FirebaseService } from '../firebase.service';
 import * as d3 from 'd3';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from '../navbar/navbar.component';
+
 
 @Component({
   selector: 'app-professional-itinerarie',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,NavbarComponent],
   templateUrl: './professional-itineraries.component.html',
   styleUrls: ['./professional-itineraries.component.css'],
 })
@@ -61,127 +63,126 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
   }
 
   // Dibuja el gráfico de radar
-  // Dibuja el gráfico de radar
-drawRadarChart(technologies: any[]): void {
-  d3.select('#chart').selectAll('*').remove();
-  if (!technologies || technologies.length === 0) return;
-
-  const width = 600;
-  const height = 600;
-  const radius = 250;
-
-  const svg = d3
-    .select('#chart')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
-
-  const chartGroup = svg
-    .append('g')
-    .attr('transform', `translate(${width / 2}, ${height / 2})`);
-
-  const levels = 5;
-  const angleSlice = (2 * Math.PI) / technologies.length;
-  const scale = d3.scaleLinear().domain([0, 100]).range([0, radius]);
-
-  // Dibujar los círculos concéntricos
-  for (let i = 1; i <= levels; i++) {
+  drawRadarChart(technologies: any[]): void {
+    d3.select('#chart').selectAll('*').remove();
+    if (!technologies || technologies.length === 0) return;
+  
+    const width = 600;
+    const height = 600;
+    const radius = 250;
+  
+    const svg = d3
+      .select('#chart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+  
+    const chartGroup = svg
+      .append('g')
+      .attr('transform', `translate(${width / 2}, ${height / 2})`);
+  
+    const levels = 5;
+    const angleSlice = (2 * Math.PI) / technologies.length;
+    const scale = d3.scaleLinear().domain([0, 100]).range([0, radius]);
+  
+    // Dibujar los círculos concéntricos
+    for (let i = 1; i <= levels; i++) {
+      chartGroup
+        .append('circle')
+        .attr('r', (scale(100) / levels) * i)
+        .attr('fill', 'none')
+        .attr('stroke', '#ccc')
+        .style('stroke-dasharray', '3 3');
+    }
+  
+    // Dibujar líneas radiales y etiquetas de tecnología
+    technologies.forEach((tech, i) => {
+      const angle = i * angleSlice;
+      const labelX = scale(100 + 10) * Math.cos(angle - Math.PI / 2);
+      const labelY = scale(100 + 10) * Math.sin(angle - Math.PI / 2);
+  
+      chartGroup
+        .append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', scale(100) * Math.cos(angle - Math.PI / 2))
+        .attr('y2', scale(100) * Math.sin(angle - Math.PI / 2))
+        .attr('stroke', '#ccc');
+  
+      chartGroup
+        .append('text')
+        .attr('x', labelX)
+        .attr('y', labelY)
+        .text(tech.id)
+        .attr('font-size', '12px')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '0.35em')
+        .style('fill', '#333');
+    });
+  
+    // Obtener los niveles del usuario
+    const userLevels = technologies.map((tech) => {
+      const userTech = this.userTechnologies.find((ut) => ut.id === tech.id);
+      return {
+        id: tech.id,
+        level: userTech ? userTech.level : 0, // Si no tiene la tecnología, nivel 0
+      };
+    });
+  
+    // Función para crear líneas del radar
+    const radarLine = d3
+      .lineRadial()
+      .radius((d: any) => scale(d.level))
+      .angle((d, i) => i * angleSlice)
+      .curve(d3.curveLinearClosed);
+  
+    // Dibujar área del itinerario (objetivo)
     chartGroup
+      .append('path')
+      .datum(technologies)
+      .attr('d', radarLine)
+      .attr('fill', 'rgba(0, 128, 255, 0.3)')
+      .attr('stroke', '#007bff')
+      .attr('stroke-width', 2);
+  
+    // Dibujar área del usuario (real)
+    // Dibujar área del usuario (real)
+  chartGroup
+  .append('path')
+  .datum(userLevels as any[]) // 👈 Aquí forzamos el tipo
+  .attr('d', radarLine)
+  .attr('fill', 'rgba(255, 99, 71, 0.3)')
+  .attr('stroke', '#ff6347')
+  .attr('stroke-width', 2);
+  
+  
+    // Dibujar puntos del itinerario
+    chartGroup
+      .selectAll('.radarCircle')
+      .data(technologies)
+      .enter()
       .append('circle')
-      .attr('r', (scale(100) / levels) * i)
-      .attr('fill', 'none')
-      .attr('stroke', '#ccc')
-      .style('stroke-dasharray', '3 3');
+      .attr('class', 'radarCircle')
+      .attr('r', 4)
+      .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
+      .attr('cy', (d, i) => scale(d.level) * Math.sin(i * angleSlice - Math.PI / 2))
+      .style('fill', '#007bff')
+      .style('fill-opacity', 0.8);
+  
+    // Dibujar puntos del usuario
+    chartGroup
+      .selectAll('.userCircle')
+      .data(userLevels)
+      .enter()
+      .append('circle')
+      .attr('class', 'userCircle')
+      .attr('r', 4)
+      .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
+      .attr('cy', (d, i) => scale(d.level) * Math.sin(i * angleSlice - Math.PI / 2))
+      .style('fill', '#ff6347')
+      .style('fill-opacity', 0.8);
   }
-
-  // Dibujar líneas radiales y etiquetas de tecnología
-  technologies.forEach((tech, i) => {
-    const angle = i * angleSlice;
-    const labelX = scale(100 + 10) * Math.cos(angle - Math.PI / 2);
-    const labelY = scale(100 + 10) * Math.sin(angle - Math.PI / 2);
-
-    chartGroup
-      .append('line')
-      .attr('x1', 0)
-      .attr('y1', 0)
-      .attr('x2', scale(100) * Math.cos(angle - Math.PI / 2))
-      .attr('y2', scale(100) * Math.sin(angle - Math.PI / 2))
-      .attr('stroke', '#ccc');
-
-    chartGroup
-      .append('text')
-      .attr('x', labelX)
-      .attr('y', labelY)
-      .text(tech.id)
-      .attr('font-size', '12px')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '0.35em')
-      .style('fill', '#333');
-  });
-
-  // Obtener los niveles del usuario
-  const userLevels = technologies.map((tech) => {
-    const userTech = this.userTechnologies.find((ut) => ut.id === tech.id);
-    return {
-      id: tech.id,
-      level: userTech ? userTech.level : 0, // Si no tiene la tecnología, nivel 0
-    };
-  });
-
-  // Función para crear líneas del radar
-  const radarLine = d3
-    .lineRadial()
-    .radius((d: any) => scale(d.level))
-    .angle((d, i) => i * angleSlice)
-    .curve(d3.curveLinearClosed);
-
-  // Dibujar área del itinerario (objetivo)
-  chartGroup
-    .append('path')
-    .datum(technologies)
-    .attr('d', radarLine)
-    .attr('fill', 'rgba(0, 128, 255, 0.3)')
-    .attr('stroke', '#007bff')
-    .attr('stroke-width', 2);
-
-  // Dibujar área del usuario (real)
-  // Dibujar área del usuario (real)
-chartGroup
-.append('path')
-.datum(userLevels as any[]) // 👈 Aquí forzamos el tipo
-.attr('d', radarLine)
-.attr('fill', 'rgba(255, 99, 71, 0.3)')
-.attr('stroke', '#ff6347')
-.attr('stroke-width', 2);
-
-
-  // Dibujar puntos del itinerario
-  chartGroup
-    .selectAll('.radarCircle')
-    .data(technologies)
-    .enter()
-    .append('circle')
-    .attr('class', 'radarCircle')
-    .attr('r', 4)
-    .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
-    .attr('cy', (d, i) => scale(d.level) * Math.sin(i * angleSlice - Math.PI / 2))
-    .style('fill', '#007bff')
-    .style('fill-opacity', 0.8);
-
-  // Dibujar puntos del usuario
-  chartGroup
-    .selectAll('.userCircle')
-    .data(userLevels)
-    .enter()
-    .append('circle')
-    .attr('class', 'userCircle')
-    .attr('r', 4)
-    .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
-    .attr('cy', (d, i) => scale(d.level) * Math.sin(i * angleSlice - Math.PI / 2))
-    .style('fill', '#ff6347')
-    .style('fill-opacity', 0.8);
-}
-
+  
 
   // Método para obtener las tecnologías del usuario y mostrarlas en el formulario
   getUserTechnologiesToDisplay() {

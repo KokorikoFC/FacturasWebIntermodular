@@ -1,31 +1,73 @@
-<h1>Itinerario Profesional</h1>
+<app-navbar></app-navbar>
 
-<label for="itinerarySelect">Selecciona un perfil:</label>
-<select id="itinerarySelect" (change)="onItineraryChange($event)" *ngIf="itineraries.length > 0">
-  <option value="" disabled selected>Selecciona un itinerario</option>
-  <option *ngFor="let itinerary of itineraries" [value]="itinerary.id">
-    {{ itinerary.id }}
-  </option>
-</select>
+<div class="circle1"></div>
+<div class="circle2"></div>
 
-<div id="chart"></div>
+<div class="professional-itineraries-content">
+  <div class="content-container container-fluid">
+    <h1 class="mb-4">Itinerario Profesional</h1>
 
-<div *ngIf="loadingData">Cargando datos...</div>
-<div *ngIf="itineraries.length === 0 && !loadingData">No hay itinerarios disponibles.</div>
+    <div class="chart-form-cont row justify-content-center">
+      <div class="itineraries-chart-container col-md-6 col-sm-12">
+        <div class="itineraries-select-cont">
+          <label for="itinerarySelect" class="form-label"
+            >Selecciona un perfil:</label
+          >
+          <select
+            id="itinerarySelect"
+            class="form-select"
+            (change)="onItineraryChange($event)"
+            *ngIf="itineraries.length > 0"
+          >
+            <option value="" disabled selected>Selecciona un itinerario</option>
+            <option
+              *ngFor="let itinerary of itineraries"
+              [value]="itinerary.id"
+            >
+              {{ itinerary.id }}
+            </option>
+          </select>
+        </div>
 
-<h2>Ajustar niveles de tecnología</h2>
+        <div id="chart"></div>
 
-<form (submit)="saveUserTechnologies()">
-  <div *ngFor="let tech of getUserTechnologiesToDisplay()">
-    <label>{{ tech.id }}</label>
-    <input
-      type="range"
-      min="0"
-      max="100"
-      [(ngModel)]="tech.level"
-      name="{{ tech.id }}"
-    />
-    <span>{{ tech.level }}%</span>
+        <div *ngIf="loadingData" class="text-muted">Cargando datos...</div>
+        <div
+          *ngIf="itineraries.length === 0 && !loadingData"
+          class="text-muted"
+        >
+          No hay itinerarios disponibles.
+        </div>
+        <div class="itinerarie-chart-legend">
+          <div class="legend1">
+            <div class="legend1-color"></div>
+            <p>Tus niveles</p>
+          </div>
+          <div class="legend2">
+            <div class="legend2-color"></div>
+            <p>Itinerario Seleccionado</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-technologies-cont col-md-4 col-sm-12">
+        <h2>Ajustar niveles de tecnología</h2>
+
+        <form (submit)="saveUserTechnologies()">
+          <div *ngFor="let tech of getUserTechnologiesToDisplay()">
+            <label>{{ tech.id }}</label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              [(ngModel)]="tech.level"
+              name="{{ tech.id }}"
+            />
+            <span>{{ tech.level }}%</span>
+          </div>
+          <button type="submit">Guardar niveles</button>
+        </form>
+      </div>
+    </div>
   </div>
-  <button type="submit">Guardar niveles</button>
-</form>
+</div>

@@ -1,0 +1,178 @@
+
+.professional-itineraries-content {
+  width: 100%;
+  height: 100vh;
+  padding-left: 150px;
+  color: #47484a;
+}
+
+.content-container {
+  padding: 50px 30px 100px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-form-cont {
+  width: 100%;
+  gap: 150px;
+}
+
+.itineraries-chart-container {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  padding: 20px;
+}
+.itineraries-select-cont {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.form-select {
+  width: 40%;
+}
+
+.itinerarie-chart-legend{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.legend1,.legend2{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.legend1-color,.legend2-color{
+  height: 25px;
+  width: 25px;
+  background-color: aqua;
+  border-radius: 5px;
+}
+
+.user-technologies-form {
+  border: 2px solid black;
+}
+
+.user-technologies-cont {
+  background-color: #cfc6b5ab;
+  border-radius: 20px;
+  padding: 20px;
+}
+form {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #f5f2edc8;
+}
+
+/* Estilo para cada grupo de tecnología en el formulario */
+form > div {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+form > div > label {
+  margin-bottom: 0;
+  font-weight: normal;
+  width: 30%;
+  text-align: left;
+}
+
+/* Estilo para el input range */
+input[type="range"] {
+  width: 60%;
+  height: 10px;
+  -webkit-appearance: none;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  margin: 0 10px;
+}
+
+/* Estilo específico para el thumb del input range en navegadores WebKit (Chrome, Safari) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e85d56;
+  cursor: pointer;
+}
+
+/* Estilo específico para el track del input range en navegadores WebKit (Chrome, Safari) */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: #ddd;
+  border-radius: 5px;
+}
+
+/* Estilo específico para el thumb del input range en navegadores Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e85d56;
+  border: none;
+}
+
+/* Estilo específico para el track del input range en navegadores Firefox */
+input[type="range"]::-moz-range-track {
+  background: #ddd;
+  border-radius: 5px;
+  border: none;
+}
+
+/* Estilo para el span que muestra el porcentaje */
+form > div > span {
+  width: 10%;
+  text-align: right;
+}
+
+button {
+  width: 100%;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 100px;
+  background-color: #e85d56;
+  color: #fffbf8;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s, color 0.2s;
+  margin-top: 20px;
+}
+
+.circle1 {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background-color: #e85d56;
+  opacity: 0.6;
+  position: fixed;
+  z-index: -1;
+  top: -100px;
+  left: -100px;
+}
+.circle2 {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background-color: #e85d56;
+  opacity: 0.6;
+  position: fixed;
+  z-index: -1;
+  bottom: 70px;
+  right: -100px;
+}
