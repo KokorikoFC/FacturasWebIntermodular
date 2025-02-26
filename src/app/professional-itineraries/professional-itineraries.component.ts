@@ -141,18 +141,17 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
       .append('path')
       .datum(technologies)
       .attr('d', radarLine)
-      .attr('fill', 'rgba(0, 128, 255, 0.3)')
-      .attr('stroke', '#007bff')
+      .attr('fill', 'rgb(249, 227, 183,0.3)')
+      .attr('stroke', '#f9e3b7')
       .attr('stroke-width', 2);
   
     // Dibujar área del usuario (real)
-    // Dibujar área del usuario (real)
   chartGroup
   .append('path')
-  .datum(userLevels as any[]) // 👈 Aquí forzamos el tipo
+  .datum(userLevels as any[]) 
   .attr('d', radarLine)
-  .attr('fill', 'rgba(255, 99, 71, 0.3)')
-  .attr('stroke', '#ff6347')
+  .attr('fill', 'rgb(240, 161, 157,0.3)')
+  .attr('stroke', '#f0a19d')
   .attr('stroke-width', 2);
   
   
@@ -166,8 +165,8 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
       .attr('r', 4)
       .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
       .attr('cy', (d, i) => scale(d.level) * Math.sin(i * angleSlice - Math.PI / 2))
-      .style('fill', '#007bff')
-      .style('fill-opacity', 0.8);
+      .style('fill', '#f9e3b7')
+      .style('fill-opacity', 0.9);
   
     // Dibujar puntos del usuario
     chartGroup
@@ -179,8 +178,8 @@ export class ProfessionalItinerariesComponent implements OnInit, OnChanges {
       .attr('r', 4)
       .attr('cx', (d, i) => scale(d.level) * Math.cos(i * angleSlice - Math.PI / 2))
       .attr('cy', (d, i) => scale(d.level) * Math.sin(i * angleSlice - Math.PI / 2))
-      .style('fill', '#ff6347')
-      .style('fill-opacity', 0.8);
+      .style('fill', '#f0a19d')
+      .style('fill-opacity', 0.9);
   }
   
 
