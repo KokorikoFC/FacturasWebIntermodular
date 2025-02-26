@@ -14,4 +14,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: #f4f1ec;
 }
+p{
+  margin-bottom: 0;
+}
 
