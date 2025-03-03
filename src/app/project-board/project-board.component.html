@@ -1,7 +1,10 @@
-<!-- project-board.component.html -->
 <div class="project-board-container">
   <div *ngIf="project; else noProject">
-    <h3>{{ project.name }}</h3>
+    <div class="header-container">
+      <h3>{{ project.name }}</h3>
+      <div class="crossCont" (click)="deleteProject()"><p>X</p></div>
+    </div>
+
     <h5>Tecnologías:</h5>
     <div class="technologies-grid">
       <div *ngFor="let tech of project.technologies" class="technology-item">
@@ -15,9 +18,8 @@
         </label>
       </div>
     </div>
-    
 
-    <!-- Contenedor para Bills dentro de los proyectos -->
+
     <h5>Facturas:</h5>
     <div
       class="project-list-cont"

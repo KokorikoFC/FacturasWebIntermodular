@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // Import ChangeDetectorRef
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FirebaseService } from '../firebase.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { AddProjectFormComponent } from '../add-project-form/add-project-form.component'; 
+import { AddProjectFormComponent } from '../add-project-form/add-project-form.component';
 import { BillCardComponent } from '../bill-card/bill-card.component';
 import { ProjectBoardComponent } from '../project-board/project-board.component';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -27,7 +27,7 @@ import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-
 })
 export class ProjectManagementComponent implements OnInit {
   bills: any[] = [];
-  allBills: any[] = []; 
+  allBills: any[] = [];
   projects: any[] = [];
   currentUserEmail: string | null = null;
   currentUserId: string | null = null;
@@ -36,7 +36,7 @@ export class ProjectManagementComponent implements OnInit {
 
   constructor(
     private firebaseService: FirebaseService,
-    private cdRef: ChangeDetectorRef // Inyecta ChangeDetectorRef aquí
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -85,11 +85,11 @@ export class ProjectManagementComponent implements OnInit {
   loadBills() {
     this.firebaseService.getBillsForCurrentUser()
       .then((bills) => {
-        this.allBills = bills; // Store ALL bills in allBills array
-        this.bills = this.allBills.filter(bill => !bill.idProject); // Filter for "Your Bills" list
-        console.log('All Bills loaded:', this.allBills); // Log all bills
-        console.log('Bills (without project):', this.bills); // Log bills without project
-        this.assignBillsToProjects(); // Call assignBillsToProjects here, after bills are loaded
+        this.allBills = bills;
+        this.bills = this.allBills.filter(bill => !bill.idProject);
+        console.log('All Bills loaded:', this.allBills);
+        console.log('Bills (without project):', this.bills);
+        this.assignBillsToProjects();
       })
       .catch((error) => {
         console.error('Error loading bills:', error);
@@ -99,9 +99,9 @@ export class ProjectManagementComponent implements OnInit {
   loadProjects() {
     this.firebaseService.getProjectsForCurrentUser()
       .then((projects) => {
-        this.projects = projects.map(project => ({ ...project, bills: [] })); // Initialize project.bills to empty array
+        this.projects = projects.map(project => ({ ...project, bills: [] }));
         console.log('Projects loaded:', this.projects);
-        this.assignBillsToProjects(); // Call assignBillsToProjects again after projects are loaded (and bills are loaded)
+        this.assignBillsToProjects();
       })
       .catch((error) => {
         console.error('Error loading projects:', error);
@@ -111,10 +111,9 @@ export class ProjectManagementComponent implements OnInit {
 
   assignBillsToProjects() {
     if (!this.projects || !this.allBills) {
-      return; // Ensure projects and allBills are loaded before assigning
+      return;
     }
     this.projects.forEach(project => {
-      // Assign bills to projects based on idProject from the ALL bills list
       project.bills = this.allBills.filter(bill => bill.idProject === project.id);
     });
 
@@ -130,56 +129,44 @@ export class ProjectManagementComponent implements OnInit {
     this.isAddProjectFormVisible = false;
   }
 
-  // Método para manejar el evento cuando un "bill" es movido dentro de la lista de bills
   dropBill(event: CdkDragDrop<any[]>) {
-    const bill = event.previousContainer.data[event.previousIndex]; // Obtener la factura arrastrada
-    
+    const bill = event.previousContainer.data[event.previousIndex];
+
     if (event.previousContainer !== event.container) {
-      // Si es un movimiento a un proyecto, encontrar el proyecto correspondiente
       if (event.container.id === 'projectList') {
         const targetProject = this.projects.find(p => p.id === event.container.id);
-  
+
         if (targetProject) {
           if (!targetProject.bills) {
             targetProject.bills = [];
           }
-  
-          // Asignamos la factura al proyecto
           targetProject.bills.push(bill);
-  
-          // Actualizamos la factura con el idProject correspondiente en Firebase
           this.firebaseService.updateBill(bill.id, { idProject: targetProject.id });
-  
-          // Eliminar la factura de la lista de facturas disponibles
           this.bills = this.bills.filter(b => b.id !== bill.id);
-  
-          // Forzar la actualización de la vista
           this.bills = [...this.bills];
-  
           console.log(`Factura ${bill.id} movida al proyecto ${targetProject.id}`);
         }
       } else {
-        // Si es un movimiento entre facturas, simplemente actualizar la lista
         moveItemInArray(this.bills, event.previousIndex, event.currentIndex);
       }
     }
   }
-  
 
-  // Maneja el evento de eliminación de un bill
+
   onBillDeleted(billId: string) {
-    // Eliminar el bill localmente de la lista
     this.bills = this.bills.filter(bill => bill.id !== billId);
-
-    // Forzar la actualización de la vista (no necesario si las referencias son cambiadas)
     console.log('Updated bills:', this.bills);
   }
 
   addProject(newProject: any) {
-    this.projects = [...this.projects, newProject]; // Añadir el proyecto al array actual
-    this.closeAddProjectForm(); // Cerrar el popup
+    this.projects = [...this.projects, newProject];
+    this.closeAddProjectForm();
     console.log('Nuevo proyecto añadido:', newProject);
   }
-  
-  
+
+  onProjectDeleted(projectId: string) {
+    this.projects = this.projects.filter(project => project.id !== projectId);
+    this.projects = [...this.projects];
+    console.log('Updated projects:', this.projects);
+  }
 }

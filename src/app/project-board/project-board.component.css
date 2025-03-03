@@ -66,3 +66,8 @@
   background: #cfc6b5;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
