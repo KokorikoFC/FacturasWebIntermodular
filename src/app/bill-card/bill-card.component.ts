@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'; // Import Output and EventEmitter
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { FirebaseService } from '../firebase.service';
+import { FirebaseService } from '../services/firebase.service';
 import Swal from 'sweetalert2';
 
 

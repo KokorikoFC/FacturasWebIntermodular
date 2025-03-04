@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { BillCardComponent } from '../bill-card/bill-card.component';
-import { FirebaseService } from '../firebase.service';
+import { FirebaseService } from '../services/firebase.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import Swal from 'sweetalert2';
 

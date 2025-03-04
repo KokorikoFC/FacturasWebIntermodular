@@ -1,4 +1,11 @@
 
+h1{
+  width: 100%;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 50px;
+}
+
 .professional-itineraries-content {
   width: 100%;
   height: 100vh;
@@ -32,7 +39,7 @@
 .itineraries-select-cont {
   width: 100%;
 }
-.form-label{
+.form-label {
   font-size: 1.2em;
 }
 .form-select {
@@ -41,11 +48,11 @@
   margin-top: 10px;
 }
 
-#chart{
+#chart {
   min-height: 600px;
 }
 
-.itinerarie-chart-legend{
+.itinerarie-chart-legend {
   width: 100%;
   height: 50px;
   display: flex;
@@ -54,22 +61,24 @@
   gap: 20px;
 }
 
-.legend1,.legend2{
+.legend1,
+.legend2 {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
 }
-.legend1-color,.legend2-color{
+.legend1-color,
+.legend2-color {
   height: 25px;
   width: 25px;
   border-radius: 5px;
 }
-.legend1-color{
+.legend1-color {
   background-color: #f0a19d;
 }
-.legend2-color{
+.legend2-color {
   background-color: #f9e3b7;
 }
 
@@ -81,18 +90,25 @@
   background-color: #cfc6b5ab;
   border-radius: 20px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.user-technologies-cont h4{
+.user-technologies-cont h4 {
   margin-bottom: 20px;
-  text-align: center ;
+  text-align: center;
 }
-
 
 form {
   padding: 20px;
   border-radius: 20px;
   background-color: #f5f2edc8;
+  height: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
 }
 
 /* Estilo para cada grupo de tecnología en el formulario */
@@ -101,6 +117,7 @@ form > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 form > div > label {

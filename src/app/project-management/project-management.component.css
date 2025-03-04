@@ -10,7 +10,8 @@
   height: 10%;
 }
 .welcome-message {
-  font-size: 32px;
+  font-size: 36px;
+  font-weight: 500;
 }
 /* Modal Overlay */
 .modal-overlay {
