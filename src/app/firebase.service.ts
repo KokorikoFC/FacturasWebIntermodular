@@ -161,12 +161,27 @@ export class FirebaseService {
     if (!user) {
       return Promise.reject('No user logged in');
     }
-
+  
+    const batch = writeBatch(this.db);
+  
+    // Obtener todas las bills asociadas a ese proyecto
+    const billsCollection = collection(this.db, `user/${user.uid}/bill`);
+    const billsQuery = query(billsCollection, where('idProject', '==', projectId));
+    const billsSnapshot = await getDocs(billsQuery);
+  
+    billsSnapshot.forEach((billDoc) => {
+      const billRef = doc(this.db, `user/${user.uid}/bill`, billDoc.id);
+      batch.update(billRef, { idProject: "" }); // Desvincular la bill del proyecto
+    });
+  
+    // Eliminar el proyecto
     const projectDocRef = doc(this.db, `user/${user.uid}/project`, projectId);
-
-    return deleteDoc(projectDocRef);
+    batch.delete(projectDocRef);
+  
+    await batch.commit();
+    console.log(`Project ${projectId} deleted, and associated bills detached`);
   }
-
+  
   async getProjectsForCurrentUser(): Promise<any[]> {
     const user: User | null = this.auth.currentUser;
     if (!user) {

@@ -16,7 +16,7 @@ export class AddProjectFormComponent {
 
   projectName: string = '';
   availableTechnologies = [
-    { name: 'Angular', image: 'assets/images/f.webp' },
+    { name: 'Angular', image: 'assets/images/angular.png' },
     { name: 'Firebase', image: 'assets/images/firebase2.png' },
     { name: 'D3.js', image: 'assets/images/d3.png' },
     { name: 'React', image: 'assets/images/react.png' },
