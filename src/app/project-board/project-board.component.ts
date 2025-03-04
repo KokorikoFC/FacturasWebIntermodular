@@ -18,10 +18,11 @@ export class ProjectBoardComponent {
 
   availableTechnologies = [
     { name: 'Angular', image: 'assets/images/f.webp' },
-    { name: 'Firebase', image: 'assets/images/f.webp' },
-    { name: 'D3.js', image: 'assets/images/f.webp' },
-    { name: 'React', image: 'assets/images/firebase2.png' },
-    { name: 'Vue.js', image: 'assets/images/firebase2.png' },
+    { name: 'Firebase', image: 'assets/images/firebase2.png' },
+    { name: 'D3.js', image: 'assets/images/d3.png' },
+    { name: 'React', image: 'assets/images/react.png' },
+    { name: 'Vue.js', image: 'assets/images/vue.png' },
+    { name: 'Svelte', image: 'assets/images/svelte.png' },
   ];
 
   constructor(private firebaseService: FirebaseService) {}

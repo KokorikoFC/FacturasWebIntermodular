@@ -45,7 +45,7 @@
   justify-content: space-around;
 }
 .technologies-grid img {
-  height: 50px;
+  height: 40px;
 }
 
 /* Evita el scroll cuando se mueve un item */
