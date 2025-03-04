@@ -58,12 +58,13 @@ export class ProjectBoardComponent {
 
   deleteProject() {
     if (this.project && this.project.id) {
-      this.firebaseService.deleteProject(this.project.id)
+      this.firebaseService
+        .deleteProject(this.project.id)
         .then(() => {
           console.log('Project deleted successfully');
-          this.projectDeleted.emit(this.project.id);
+          this.projectDeleted.emit(this.project.id); // Emitir evento al padre
         })
-        .catch((error: any) => { // Explicitly type the error parameter as 'any'
+        .catch((error: any) => {
           console.error('Error deleting project:', error);
         });
     }

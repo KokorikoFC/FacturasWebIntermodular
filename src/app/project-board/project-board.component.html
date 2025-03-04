@@ -1,8 +1,8 @@
 <div class="project-board-container">
   <div *ngIf="project; else noProject">
+    <div class="crossCont" (click)="deleteProject()"><p>X</p></div>
     <div class="header-container">
       <h3>{{ project.name }}</h3>
-      <div class="crossCont" (click)="deleteProject()"><p>X</p></div>
     </div>
 
     <h5>Tecnologías:</h5>

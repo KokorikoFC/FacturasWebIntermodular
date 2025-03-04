@@ -108,7 +108,7 @@ export class ProjectManagementComponent implements OnInit {
       });
   }
 
-
+  
   assignBillsToProjects() {
     if (!this.projects || !this.allBills) {
       return;
@@ -166,7 +166,8 @@ export class ProjectManagementComponent implements OnInit {
 
   onProjectDeleted(projectId: string) {
     this.projects = this.projects.filter(project => project.id !== projectId);
-    this.projects = [...this.projects];
+    this.projects = [...this.projects]; // Forzar actualización de la vista
     console.log('Updated projects:', this.projects);
   }
+  
 }
