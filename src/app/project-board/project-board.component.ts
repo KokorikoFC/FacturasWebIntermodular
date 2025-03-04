@@ -4,6 +4,8 @@ import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { BillCardComponent } from '../bill-card/bill-card.component';
 import { FirebaseService } from '../firebase.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-project-board',
@@ -57,16 +59,37 @@ export class ProjectBoardComponent {
   }
 
   deleteProject() {
-    if (this.project && this.project.id) {
-      this.firebaseService
-        .deleteProject(this.project.id)
-        .then(() => {
-          console.log('Project deleted successfully');
-          this.projectDeleted.emit(this.project.id); // Emitir evento al padre
-        })
-        .catch((error: any) => {
-          console.error('Error deleting project:', error);
-        });
-    }
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#56a6e8",
+      cancelButtonColor: "#e85d56",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed && this.project && this.project.id) {
+        this.firebaseService.deleteProject(this.project.id)
+          .then(() => {
+            Swal.fire({
+              title: "¡Eliminado!",
+              text: "Tu proyecto ha sido eliminado.",
+              icon: "success",
+            });
+            this.projectDeleted.emit(this.project.id);
+          })
+          .catch((error: any) => {
+            Swal.fire({
+              title: "Error",
+              text: "Hubo un problema al eliminar el proyecto.",
+              icon: "error",
+            });
+            console.error("Error deleting project:", error);
+          });
+      }
+    });
   }
+  
+  
 }
