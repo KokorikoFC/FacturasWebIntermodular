@@ -1,9 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop'; // Importar DragDropModule
-import { BillCardComponent } from '../bill-card/bill-card.component'; // Importar BillCardComponent
-import { FirebaseService } from '../firebase.service'; // Importar FirebaseService
+import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { BillCardComponent } from '../bill-card/bill-card.component';
+import { FirebaseService } from '../services/firebase.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-project-board',
@@ -13,46 +15,39 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./project-board.component.css'],
 })
 export class ProjectBoardComponent {
-  @Input() project: any; // Declarar el proyecto como propiedad de entrada
+  @Input() project: any;
+  @Output() projectDeleted = new EventEmitter<string>();
 
   availableTechnologies = [
     { name: 'Angular', image: 'assets/images/f.webp' },
-    { name: 'Firebase', image: 'assets/images/f.webp' },
-    { name: 'D3.js', image: 'assets/images/f.webp' },
-    { name: 'React', image: 'assets/images/firebase2.png' },
-    { name: 'Vue.js', image: 'assets/images/firebase2.png' },
+    { name: 'Firebase', image: 'assets/images/firebase2.png' },
+    { name: 'D3.js', image: 'assets/images/d3.png' },
+    { name: 'React', image: 'assets/images/react.png' },
+    { name: 'Vue.js', image: 'assets/images/vue.png' },
+    { name: 'Svelte', image: 'assets/images/svelte.png' },
   ];
 
   constructor(private firebaseService: FirebaseService) {}
 
-  // Método para manejar cuando un bill es soltado en el proyecto
   onBillDroppedToProject(event: CdkDragDrop<any[]>) {
-    const bill = event.previousContainer.data[event.previousIndex]; // Obtener la factura arrastrada
-    const targetProject = this.project; // Proyecto al que se está arrastrando la factura
+    const bill = event.previousContainer.data[event.previousIndex];
+    const targetProject = this.project;
 
-    // Si el contenedor de destino es el mismo (es decir, reordenar dentro del mismo proyecto)
     if (event.previousContainer === event.container) {
-      // Solo mover los elementos en el arreglo
       moveItemInArray(
         targetProject.bills,
         event.previousIndex,
         event.currentIndex
       );
     } else {
-      // Si se está moviendo el bill de un proyecto a otro
       if (!targetProject.bills) {
         targetProject.bills = [];
       }
       targetProject.bills.push(bill);
-
-      // Eliminar la factura de la lista original de bills
       event.previousContainer.data.splice(event.previousIndex, 1);
     }
 
-    // Forzar una actualización creando una nueva referencia del arreglo de bills
     targetProject.bills = [...targetProject.bills];
-
-    // Actualizar el campo 'idProject' del bill en Firebase
     this.firebaseService.updateBill(bill.id, { idProject: targetProject.id });
 
     console.log(`Bill ${bill.id} moved to project ${targetProject.id}`);
@@ -60,7 +55,40 @@ export class ProjectBoardComponent {
 
   getTechnologyImage(techName: string): string {
     const tech = this.availableTechnologies.find((t) => t.name === techName);
-    return tech ? tech.image : 'assets/images/default.png'; // Imagen por defecto si no la encuentra
+    return tech ? tech.image : 'assets/images/default.png';
+  }
+
+  deleteProject() {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#56a6e8",
+      cancelButtonColor: "#e85d56",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed && this.project && this.project.id) {
+        this.firebaseService.deleteProject(this.project.id)
+          .then(() => {
+            Swal.fire({
+              title: "¡Eliminado!",
+              text: "Tu proyecto ha sido eliminado.",
+              icon: "success",
+            });
+            this.projectDeleted.emit(this.project.id);
+          })
+          .catch((error: any) => {
+            Swal.fire({
+              title: "Error",
+              text: "Hubo un problema al eliminar el proyecto.",
+              icon: "error",
+            });
+            console.error("Error deleting project:", error);
+          });
+      }
+    });
   }
   
   

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FirebaseService } from '../firebase.service';
+import { FirebaseService } from '../services/firebase.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,11 +16,12 @@ export class AddProjectFormComponent {
 
   projectName: string = '';
   availableTechnologies = [
-    { name: 'Angular', image: 'assets/images/f.webp' },
-    { name: 'Firebase', image: 'assets/images/f.webp' },
-    { name: 'D3.js', image: 'assets/images/f.webp' },
-    { name: 'React', image: 'assets/images/firebase2.png' },
-    { name: 'Vue.js', image: 'assets/images/firebase2.png' }
+    { name: 'Angular', image: 'assets/images/angular.png' },
+    { name: 'Firebase', image: 'assets/images/firebase2.png' },
+    { name: 'D3.js', image: 'assets/images/d3.png' },
+    { name: 'React', image: 'assets/images/react.png' },
+    { name: 'Vue.js', image: 'assets/images/vue.png' },
+    { name: 'Svelte', image: 'assets/images/svelte.png' },
   ];
 
   selectedTechnologies: string[] = [];

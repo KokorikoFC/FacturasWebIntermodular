@@ -10,7 +10,8 @@
   height: 10%;
 }
 .welcome-message {
-  font-size: 32px;
+  font-size: 36px;
+  font-weight: 500;
 }
 /* Modal Overlay */
 .modal-overlay {
@@ -29,7 +30,7 @@
 
 /* Modal Content */
 .modal-content {
-  background-color: #fffbf8;
+  background-color: white;
   padding: 20px;
   border-radius: 20px;
   width: 80%;

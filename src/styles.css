@@ -8,6 +8,7 @@
 html,
 body {
   min-height: 100vh;
+  color: #333;
 }
 body {
   margin: 0;
