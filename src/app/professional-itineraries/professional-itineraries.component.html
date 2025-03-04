@@ -19,7 +19,6 @@
             (change)="onItineraryChange($event)"
             *ngIf="itineraries.length > 0"
           >
-            <option value="" disabled selected>Selecciona un itinerario</option>
             <option
               *ngFor="let itinerary of itineraries"
               [value]="itinerary.id"
