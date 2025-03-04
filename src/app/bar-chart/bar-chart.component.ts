@@ -1,4 +1,3 @@
-// bar-chart.component.ts
 import { Component, Input, ElementRef, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { CommonModule } from '@angular/common';
@@ -6,24 +5,31 @@ import { CommonModule } from '@angular/common';
 export interface BarChartDataPoint {
   category: string;
   total: number;
-  [key: string]: any; // Index signature: Allow accessing properties by string
+  [key: string]: any; 
 }
 
 @Component({
   selector: 'app-bar-chart',
   standalone: true,
   imports: [CommonModule],
-  template: '<svg #chart></svg>',
+  template: `
+  <div style="position: relative;">
+    <svg #chart></svg>
+    <div #tooltip class="chart-tooltip" style="opacity:0; position: absolute; background-color: white; border: 1px solid #ccc; padding: 10px; pointer-events: none;"></div>
+  </div>
+  `,
   styleUrl: './bar-chart.component.css'
 })
 export class BarChartComponent implements OnChanges {
   @ViewChild('chart', { static: true }) chartRef!: ElementRef;
+  @ViewChild('tooltip', { static: true }) tooltipRef!: ElementRef; 
   @Input() data: BarChartDataPoint[] = [];
   @Input() categoryField: string = 'category';
   @Input() valueField: string = 'total';
   @Input() chartTitle: string = '';
 
   private svg: any;
+  private tooltip: any; 
   private margin = { top: 60, right: 20, bottom: 50, left: 70 };
   private width = 600 - this.margin.left - this.margin.right;
   private height = 400 - this.margin.top - this.margin.bottom;
@@ -51,6 +57,8 @@ export class BarChartComponent implements OnChanges {
       .attr('height', this.height + this.margin.top + this.margin.bottom);
 
     this.svg.selectAll('*').remove();
+
+    this.tooltip = d3.select(this.tooltipRef.nativeElement);
 
     const g = this.svg.append("g")
       .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
@@ -103,6 +111,19 @@ export class BarChartComponent implements OnChanges {
       .attr("height", (d: BarChartDataPoint) => this.height - y(d[this.valueField]))
       .attr("fill", "#f9e3b7")
       .attr("stroke", "#b16c34")
-      .attr("stroke-width", 1);
-  }
+      .attr("stroke-width", 1)
+      .on('mouseover', (event: any, d: BarChartDataPoint) => {
+          this.tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+          this.tooltip.html(`${d[this.categoryField]}: ${d[this.valueField].toFixed(2)} €`) // Formatea el valor a 2 decimales
+            .style("left", (event.offsetX) + "px")
+            .style("top", (event.offsetY - 30) + "px");
+        })
+        .on('mouseout', () => {
+            this.tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+        });
+    }
 }
