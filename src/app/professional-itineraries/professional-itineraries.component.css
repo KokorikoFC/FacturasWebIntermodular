@@ -48,6 +48,13 @@ h1{
   margin-top: 10px;
 }
 
+select:focus {
+  outline: none;
+  border: 1px solid #47484a; 
+  box-shadow: none; 
+}
+
+
 #chart {
   min-height: 600px;
 }
