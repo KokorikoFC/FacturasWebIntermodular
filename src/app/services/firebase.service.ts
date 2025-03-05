@@ -49,9 +49,47 @@ export class FirebaseService {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  async createUserDocument(userId: string, userData: any) {
+  async createUserDocument(userId: string, email: string) {
     const userDocRef = doc(this.db, `user/${userId}`);
-    await setDoc(userDocRef, userData);
+
+    // Crear documento principal del usuario con su email
+    await setDoc(userDocRef, { email: email });
+
+    // Crear la subcolección userTechnologies con las tecnologías iniciales
+    await this.createUserTechnologiesCollection(userId);
+  }
+
+  private async createUserTechnologiesCollection(userId: string) {
+    const technologies = [
+      'Angular',
+      'CSS',
+      'Docker',
+      'Express',
+      'Firebase',
+      'Git',
+      'HTML',
+      'JavaScript',
+      'MongoDB',
+      'Node',
+      'React',
+      'SQL',
+      'Vue',
+    ];
+
+    const batch = writeBatch(this.db);
+    const userTechnologiesCollectionRef = collection(
+      this.db,
+      `user/${userId}/userTechnologies`
+    );
+
+    technologies.forEach((tech) => {
+      const techDocRef = doc(userTechnologiesCollectionRef, tech);
+
+      // Guardar cada tecnología con nivel inicial 0
+      batch.set(techDocRef, { name: tech, level: 0 });
+    });
+
+    await batch.commit();
   }
 
   loginUser(email: string, password: string) {
@@ -161,27 +199,30 @@ export class FirebaseService {
     if (!user) {
       return Promise.reject('No user logged in');
     }
-  
+
     const batch = writeBatch(this.db);
-  
+
     // Obtener todas las bills asociadas a ese proyecto
     const billsCollection = collection(this.db, `user/${user.uid}/bill`);
-    const billsQuery = query(billsCollection, where('idProject', '==', projectId));
+    const billsQuery = query(
+      billsCollection,
+      where('idProject', '==', projectId)
+    );
     const billsSnapshot = await getDocs(billsQuery);
-  
+
     billsSnapshot.forEach((billDoc) => {
       const billRef = doc(this.db, `user/${user.uid}/bill`, billDoc.id);
-      batch.update(billRef, { idProject: "" }); // Desvincular la bill del proyecto
+      batch.update(billRef, { idProject: '' }); // Desvincular la bill del proyecto
     });
-  
+
     // Eliminar el proyecto
     const projectDocRef = doc(this.db, `user/${user.uid}/project`, projectId);
     batch.delete(projectDocRef);
-  
+
     await batch.commit();
     console.log(`Project ${projectId} deleted, and associated bills detached`);
   }
-  
+
   async getProjectsForCurrentUser(): Promise<any[]> {
     const user: User | null = this.auth.currentUser;
     if (!user) {
@@ -237,7 +278,10 @@ export class FirebaseService {
       throw new Error('No user logged in or invalid user ID');
     }
 
-    const technologiesCollectionRef = collection(this.db, `user/${userId}/userTechnologies`);
+    const technologiesCollectionRef = collection(
+      this.db,
+      `user/${userId}/userTechnologies`
+    );
     const technologiesSnapshot = await getDocs(technologiesCollectionRef);
 
     const technologies: any[] = [];
@@ -251,19 +295,28 @@ export class FirebaseService {
     return technologies;
   }
 
-  async updateUserTechnologies(userId: string, technologies: any[]): Promise<void> {
+  async updateUserTechnologies(
+    userId: string,
+    technologies: any[]
+  ): Promise<void> {
     const user = this.auth.currentUser;
     if (!user || user.uid !== userId) {
       throw new Error('No user logged in or invalid user ID');
     }
 
     const batch = writeBatch(this.db);
-    const technologiesCollectionRef = collection(this.db, `user/${userId}/userTechnologies`);
+    const technologiesCollectionRef = collection(
+      this.db,
+      `user/${userId}/userTechnologies`
+    );
 
     technologies.forEach((tech) => {
       const { id, ...techWithoutId } = tech;
 
-      const techDocRef = doc(this.db, `user/${userId}/userTechnologies/${tech.id}`);
+      const techDocRef = doc(
+        this.db,
+        `user/${userId}/userTechnologies/${tech.id}`
+      );
       batch.set(techDocRef, techWithoutId);
     });
 

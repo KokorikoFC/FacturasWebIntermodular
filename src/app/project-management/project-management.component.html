@@ -9,12 +9,14 @@
     <div class="project-boards-container">
       <div *ngIf="currentUserEmail" class="welcome-message-cont">
         <p class="welcome-message">
-          ¡Bienvenido, <strong>{{ userName }}</strong
+          ¡Bienvenido, <strong>{{ currentUserEmail }}</strong
           >!
         </p>
       </div>
       <div *ngIf="!currentUserEmail">
-        <p class="welcome-message"><strong>No hay ningún usuario logueado.</strong></p>
+        <p class="welcome-message">
+          <strong>No hay ningún usuario logueado.</strong>
+        </p>
       </div>
       <div class="project-title-cont">
         <h3>Tus proyectos</h3>
@@ -37,9 +39,10 @@
       <div class="project-container">
         <ng-container *ngIf="projects.length > 0; else noProjects">
           <div *ngFor="let project of projects">
-            <app-project-board 
-              [project]="project" 
-              (projectDeleted)="onProjectDeleted($event)">
+            <app-project-board
+              [project]="project"
+              (projectDeleted)="onProjectDeleted($event)"
+            >
             </app-project-board>
           </div>
         </ng-container>
@@ -47,7 +50,6 @@
           <p>No hay proyectos disponibles.</p>
         </ng-template>
       </div>
-      
     </div>
 
     <!-- Lista de Bills (Con arrastre habilitado) -->
@@ -61,7 +63,6 @@
         [cdkDropListData]="bills"
         [cdkDropListConnectedTo]="['projectList']"
       >
-
         <ng-container *ngIf="bills.length > 0; else noBills">
           <app-bill-card
             *ngFor="let bill of bills"
