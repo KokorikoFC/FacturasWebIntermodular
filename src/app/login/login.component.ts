@@ -15,6 +15,7 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
+  errorMessage = '';
 
   constructor(
     private firebaseService: FirebaseService,
@@ -26,12 +27,11 @@ export class LoginComponent {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('Usuario logueado', user);
-        // Redirige al dashboard tras login exitoso
         this.router.navigate(['/projectManagement']);
       })
       .catch((error) => {
         console.error('Error al hacer login:', error.message);
-        // Aquí puedes añadir código para mostrar un mensaje de error al usuario
+        this.errorMessage = 'Error al iniciar sesión. Comprueba tus credenciales.';
       });
   }
 

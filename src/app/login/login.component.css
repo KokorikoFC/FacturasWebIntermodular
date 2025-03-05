@@ -174,3 +174,16 @@ body {
     color: #e85d56; /* Hover color to match button hover */
     text-decoration: underline; 
   }
+
+  .error-message {
+    color: #e85d56;
+    background-color: #fde2e2;
+    padding: 12px;
+    border-radius: 7px;
+    margin-block: 18px;
+    border: 1px solid #e85d56;
+    z-index: 1;
+    position: relative;
+    font-size: 1em;
+    text-align: center;
+}

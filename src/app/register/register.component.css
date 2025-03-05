@@ -111,8 +111,7 @@ label {
     font-size: 1.1em;
 }
 
-input[type="email"],
-input[type="password"] {
+input{
     width: 100%;
     padding: 10px;
     border: 2px solid #ccc;
@@ -124,8 +123,7 @@ input[type="password"] {
     box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.08);
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
+input:focus {
     border-color: #e85d56;
     outline: none;
     box-shadow: 0 0 8px rgba(232, 93, 86, 0.8);
@@ -187,6 +185,7 @@ input[type="password"]:focus {
     z-index: 1;
     position: relative;
     font-size: 1em;
+    text-align: center;
 }
 
 .validation-error {

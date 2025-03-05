@@ -3,11 +3,23 @@
         <h2>Registro</h2>
 
         <form #registerForm="ngForm" (ngSubmit)="register()">
+
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" [(ngModel)]="name" #nameInput="ngModel"
+                    required minlength="3">
+                <div *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)"
+                    class="validation-error">
+                    <div *ngIf="nameInput.errors?.['required']">El nombre es obligatorio.</div>
+                    <div *ngIf="nameInput.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" [(ngModel)]="email" #emailInput="ngModel" required email>
                 <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="validation-error">
-                    <div *ngIf="emailInput.errors?.['required']">Email es obligatorio.</div>
+                    <div *ngIf="emailInput.errors?.['required']">El email es obligatorio.</div>
                     <div *ngIf="emailInput.errors?.['email']">Email no válido.</div>
                 </div>
             </div>
@@ -18,7 +30,7 @@
                     required minlength="6">
                 <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)"
                     class="validation-error">
-                    <div *ngIf="passwordInput.errors?.['required']">Contraseña es obligatoria.</div>
+                    <div *ngIf="passwordInput.errors?.['required']">La vontraseña es obligatoria.</div>
                     <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.
                     </div>
                 </div>
