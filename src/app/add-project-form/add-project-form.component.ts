@@ -17,12 +17,23 @@ export class AddProjectFormComponent {
   projectName: string = '';
   availableTechnologies = [
     { name: 'Angular', image: 'assets/images/angular.png' },
-    { name: 'Firebase', image: 'assets/images/firebase2.png' },
+    { name: 'Bootstrap', image: 'assets/images/bootstrap.png' },
+    { name: 'CSS', image: 'assets/images/css.png' },
     { name: 'D3.js', image: 'assets/images/d3.png' },
+    { name: 'Firebase', image: 'assets/images/firebase2.png' },
+    { name: 'HTML', image: 'assets/images/html.png' },
+    { name: 'Java', image: 'assets/images/java.png' },
+    { name: 'JavaScript', image: 'assets/images/javascript.png' },
+    { name: 'MySQL', image: 'assets/images/mysql.png' },
+    { name: 'PostgreSQL', image: 'assets/images/postgre.png' },
+    { name: 'Python', image: 'assets/images/python.png' },
     { name: 'React', image: 'assets/images/react.png' },
-    { name: 'Vue.js', image: 'assets/images/vue.png' },
     { name: 'Svelte', image: 'assets/images/svelte.png' },
-  ];
+    { name: 'TypeScript', image: 'assets/images/typescript.png' },
+    { name: 'Vue.js', image: 'assets/images/vue.png' },
+    { name: 'Rust', image: 'assets/images/rust.png' }
+];
+
 
   selectedTechnologies: string[] = [];
   errorMessage: string = '';
