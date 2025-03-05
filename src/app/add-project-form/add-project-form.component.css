@@ -5,7 +5,7 @@
   border-radius: 5px;
 }
 
-h2{
+h2 {
   margin-bottom: 50px;
 }
 .form-group {
@@ -26,7 +26,6 @@ h2{
 }
 
 .form-group-technologies {
-  
 }
 
 .technology-item {
@@ -53,17 +52,19 @@ h2{
 }
 
 .technology-item.selected {
-  background-color:#cfc6b5;
+  background-color: #cfc6b5;
   color: #47484a;
 }
 
 .technologies-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid */
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 20px;
   height: 310px;
   overflow-y: auto;
   scrollbar-width: none;
+  justify-items: center;
+  align-items: center;
 }
 
 .technology-item label {
@@ -72,7 +73,6 @@ h2{
   align-items: center;
   cursor: pointer;
 }
-
 
 .submit-button {
   padding: 10px 20px;
@@ -93,8 +93,7 @@ h2{
   margin-bottom: 10px;
 }
 
-
-.error-container{
+.error-container {
   height: 30px;
   width: 100%;
   text-align: center;
