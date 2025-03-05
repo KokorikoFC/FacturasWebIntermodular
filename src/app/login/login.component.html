@@ -19,6 +19,9 @@
           <div *ngIf="passwordInput.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
       </div> 
     </div>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    
     <button (click)="login()">Login</button>
 
     <div class="register-link">

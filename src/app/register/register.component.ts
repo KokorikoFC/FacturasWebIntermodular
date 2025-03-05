@@ -12,6 +12,7 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  name = '';
   email = '';
   password = '';
   errorMessage = '';
@@ -20,7 +21,7 @@ export class RegisterComponent {
   constructor(
     private firebaseService: FirebaseService,
     private router: Router
-  ) {}
+  ) { }
 
   register() {
     this.errorMessage = '';
@@ -28,6 +29,7 @@ export class RegisterComponent {
     this.firebaseService
       .registerUser(this.email, this.password)
       .then((userCredential) => {
+
         // Registro exitoso
         this.successMessage = 'Registro completado con éxito. ¡Bienvenido!';
         console.log('Usuario registrado:', userCredential.user);
@@ -35,12 +37,15 @@ export class RegisterComponent {
         if (userCredential.user) {
           // Crear documento de usuario y subcolección de tecnologías
           this.firebaseService
-            .createUserDocument(userCredential.user.uid, this.email)
+            .createUserDocument(userCredential.user.uid, this.email, this.name)
             .then(() => {
               console.log(
                 'Documento de usuario y tecnologías creadas en Firestore'
               );
-              this.router.navigate(['/login']);
+              // Esperar 2 segundos antes de navegar
+              setTimeout(() => {
+                this.router.navigate(['/login']);
+              }, 1000);
             })
             .catch((error) => {
               console.error(
@@ -51,13 +56,9 @@ export class RegisterComponent {
             });
         } else {
           console.error('Error: userCredential.user es null');
-          this.errorMessage =
-            'Error al obtener información del usuario tras registro.';
         }
       })
       .catch((error) => {
-        // Error en el registro
-        this.errorMessage = this.getErrorMessage(error.code);
         console.error('Error en registro:', error);
       });
   }

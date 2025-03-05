@@ -49,11 +49,14 @@ export class FirebaseService {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  async createUserDocument(userId: string, email: string) {
+  async createUserDocument(userId: string, email: string, name: string) {
     const userDocRef = doc(this.db, `user/${userId}`);
 
-    // Crear documento principal del usuario con su email
-    await setDoc(userDocRef, { email: email });
+    // Crear documento principal del usuario con su email y nombre
+    await setDoc(userDocRef, {
+      email: email,
+      name: name
+    });
 
     // Crear la subcolección userTechnologies con las tecnologías iniciales
     await this.createUserTechnologiesCollection(userId);
