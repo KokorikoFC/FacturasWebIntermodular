@@ -6,16 +6,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddProjectFormComponent } from './add-project-form/add-project-form.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfessionalItinerariesComponent } from './professional-itineraries/professional-itineraries.component';
-
+import { authGuard } from './auth.guard'; // <-- Importa authGuard
 
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'navbar', component: NavbarComponent },
-  { path: 'projectManagement', component: ProjectManagementComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'addProjectForm', component: AddProjectFormComponent },
-  {path:'profesionalItineraries',component:ProfessionalItinerariesComponent},
+  { path: 'navbar', component: NavbarComponent, canActivate: [authGuard] },
+  { path: 'projectManagement', component: ProjectManagementComponent, canActivate: [authGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'addProjectForm', component: AddProjectFormComponent, canActivate: [authGuard] },
+  {path:'profesionalItineraries',component:ProfessionalItinerariesComponent, canActivate: [authGuard]},
 ];
