@@ -205,7 +205,6 @@ export class DashboardComponent implements OnInit {
         }
     }
 
-
     calcularTotalesMensuales(): any {
         const monthlyTotals: { [month: string]: any } = {};
 
@@ -244,25 +243,31 @@ export class DashboardComponent implements OnInit {
 
     calcularTotalesTrimestrales(): any {
         const quarterlyTotals: { [quarter: string]: any } = {};
-
+    
         this.facturas.forEach(factura => {
-
-
             const fechaEmisionString = factura.fechaEmision;
             console.log("fechaEmision (string):", fechaEmisionString);
-
+    
             const fechaEmision = this.parseDate(fechaEmisionString);
             console.log("fechaEmision (Date):", fechaEmision);
-
+    
             if (!fechaEmision) {
                 console.error("Invalid Date detected for:", fechaEmisionString);
                 return;
             }
-
+    
             const year = fechaEmision.getFullYear();
             const quarterNumber = Math.floor((fechaEmision.getMonth() / 3));
             const quarter = `Q${quarterNumber + 1} ${year}`;
-
+    
+            // Calcular el importe del IVA
+            const ivaPercentage = this.getIvaPercentage(factura);
+            const ivaAmount = (factura.baseImponible || 0) * (ivaPercentage / 100);
+    
+            // Calcular el importe del IRPF
+            const irpfPercentage = this.getIrpfPercentage(factura);
+            const irpfAmount = (factura.baseImponible || 0) * (irpfPercentage / 100);
+    
             if (!quarterlyTotals[quarter]) {
                 quarterlyTotals[quarter] = {
                     baseImponible: 0,
@@ -272,32 +277,39 @@ export class DashboardComponent implements OnInit {
                 };
             }
             quarterlyTotals[quarter].baseImponible += factura.baseImponible || 0;
-            quarterlyTotals[quarter].iva += factura.iva || 0;
-            quarterlyTotals[quarter].irpf += factura.irpf || 0;
+            quarterlyTotals[quarter].iva += ivaAmount; // Sumar el importe del IVA calculado
+            quarterlyTotals[quarter].irpf += irpfAmount; // Sumar el importe del IRPF calculado
             quarterlyTotals[quarter].total += factura.total || 0;
         });
         return quarterlyTotals;
     }
 
-
     calcularTotalesAnuales(): any {
         const annualTotals: { [year: string]: any } = {};
-
+    
         this.facturas.forEach(factura => {
-
+    
             const fechaEmisionString = factura.fechaEmision;
             console.log("fechaEmision (string):", fechaEmisionString);
-
+    
             const fechaEmision = this.parseDate(fechaEmisionString);
             console.log("fechaEmision (Date):", fechaEmision);
-
+    
             if (!fechaEmision) {
                 console.error("Invalid Date detected for:", fechaEmisionString);
                 return;
             }
-
+    
             const year = fechaEmision.getFullYear().toString();
-
+    
+            // Calcular el importe del IVA
+            const ivaPercentage = this.getIvaPercentage(factura);
+            const ivaAmount = (factura.baseImponible || 0) * (ivaPercentage / 100);
+    
+            // Calcular el importe del IRPF
+            const irpfPercentage = this.getIrpfPercentage(factura);
+            const irpfAmount = (factura.baseImponible || 0) * (irpfPercentage / 100);
+    
             if (!annualTotals[year]) {
                 annualTotals[year] = {
                     baseImponible: 0,
@@ -307,10 +319,20 @@ export class DashboardComponent implements OnInit {
                 };
             }
             annualTotals[year].baseImponible += factura.baseImponible || 0;
-            annualTotals[year].iva += factura.iva || 0;
-            annualTotals[year].irpf += factura.irpf || 0;
+            annualTotals[year].iva += ivaAmount; // Sumar el importe del IVA calculado
+            annualTotals[year].irpf += irpfAmount; // Sumar el importe del IRPF calculado
             annualTotals[year].total += factura.total || 0;
         });
         return annualTotals;
+    }
+    
+    // Función para obtener el porcentaje de IVA directamente de la factura
+    getIvaPercentage(factura: any): number {
+        return factura.iva || 0; // Asumiendo que la propiedad se llama 'iva'
+    }
+    
+    // Función para obtener el porcentaje de IRPF directamente de la factura
+    getIrpfPercentage(factura: any): number {
+        return factura.irpf || 0; // Asumiendo que la propiedad se llama 'irpf'
     }
 }
