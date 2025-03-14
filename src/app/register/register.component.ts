@@ -63,18 +63,4 @@ export class RegisterComponent {
       });
   }
 
-  getErrorMessage(errorCode: string): string {
-    switch (errorCode) {
-      case 'auth/email-already-in-use':
-        return 'Este email ya está en uso.';
-      case 'auth/invalid-email':
-        return 'Email no válido.';
-      case 'auth/weak-password':
-        return 'La contraseña debe tener al menos 6 caracteres.';
-      case 'auth/operation-not-allowed':
-        return 'Registro con email/contraseña no habilitado.';
-      default:
-        return 'Error desconocido al registrarse.';
-    }
-  }
 }

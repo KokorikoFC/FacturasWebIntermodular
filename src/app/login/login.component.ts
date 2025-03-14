@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router'; // Importa Router
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -19,7 +19,7 @@ export class LoginComponent {
 
   constructor(
     private firebaseService: FirebaseService,
-    private router: Router // Inyecta Router en el constructor
+    private router: Router 
   ) { }
 
   login() {

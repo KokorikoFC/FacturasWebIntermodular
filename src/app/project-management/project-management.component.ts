@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -36,7 +36,6 @@ export class ProjectManagementComponent implements OnInit {
 
   constructor(
     private firebaseService: FirebaseService,
-    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@
 
 <div class="professional-itineraries-content">
   <div class="content-container container-fluid">
-    <h1>Itinerario Profesional</h1>
+    <h1 class="mb-4">Itinerario Profesional</h1>
 
     <div class="chart-form-cont row justify-content-center">
       <div class="itineraries-chart-container col-md-6 col-sm-12">
@@ -19,6 +19,7 @@
             (change)="onItineraryChange($event)"
             *ngIf="itineraries.length > 0"
           >
+            <option value="" disabled selected>Selecciona un itinerario</option>
             <option
               *ngFor="let itinerary of itineraries"
               [value]="itinerary.id"

@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component'; // Asegúrate de importar el componente
+import { LoginComponent } from './login/login.component'; 
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProjectManagementComponent } from './project-management/project-management.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddProjectFormComponent } from './add-project-form/add-project-form.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfessionalItinerariesComponent } from './professional-itineraries/professional-itineraries.component';
-import { authGuard } from './auth.guard'; // <-- Importa authGuard
+import { authGuard } from './auth.guard'; 
 
 
 export const routes: Routes = [
