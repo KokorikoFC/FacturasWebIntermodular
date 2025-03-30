@@ -31,16 +31,29 @@ Facturador Web is built using the following technologies:
 ## Main Components
 
 1.  **`LoginComponent`:** Allows users to log in with their email and password using Firebase Authentication.
+    <img src="src/assets/images/readme_img/login.png" width="150" alt="Login Screen">
+
 2.  **`RegisterComponent`:** Allows new users to create an account with their email and password.
+    <img src="src/assets/images/readme_img/register1.png" width="150" alt="Register Screen">
+
 3.  **`ProjectManagementComponent`:** Main component for project and invoice management.
     * Displays unassigned invoices.
     * Integrates drag and drop functionality to assign invoices to projects.
     * Coordinates the `BillCardComponent`, `ProjectBoardComponent`, and `AddProjectFormComponent` components.
+    <img src="src/assets/images/readme_img/gestion_facturas.png" alt="Project Management Screen" width="150">
+
 4.  **`BillCardComponent`:** Visually renders an individual invoice and allows it to be deleted or dragged.
+
 5.  **`ProjectBoardComponent`:** Represents a project, displaying its name, technologies, and assigned invoices. Allows invoices to be dragged to the project and the project to be deleted.
+
 6.  **`AddProjectFormComponent`:** Pop-up form to create new projects, allowing users to assign a name and select technologies.
+    <img src="src/assets/images/readme_img/proyecto_form.png" alt="Add Project Form" width="150">
+
 7.  **`DashboardComponent`:** Provides an overview of invoices with interactive graphs (bar and segmented) and query options by period and year.
+    <img src="src/assets/images/readme_img/dashboard.png" width="150" alt="Dashboard Screen">
+
 8.  **`ProfessionalItinerariesComponent`:** Visually displays the technologies required by a professional itinerary and the user's skills, allowing them to be modified and saved.
+    <img src="src/assets/images/readme_img/itinerarios.png" width="150" alt="Professional Itineraries Screen" width="150">
 
 ## Database Structure (Web-Related)
 
