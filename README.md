@@ -32,18 +32,18 @@ Facturador Web is built using the following technologies:
 
 1.  **`LoginComponent`:** Allows users to log in with their email and password using Firebase Authentication.
 
-    <img src="src/assets/images/readme_img/login.png" width="400" alt="Login Screen">
+    <img src="src/assets/images/readme_img/login.png" width="550" alt="Login Screen">
 
 2.  **`RegisterComponent`:** Allows new users to create an account with their email and password.
 
-    <img src="src/assets/images/readme_img/register1.png" width="400" alt="Register Screen">
+    <img src="src/assets/images/readme_img/register1.png" width="550" alt="Register Screen">
 
 3.  **`ProjectManagementComponent`:** Main component for project and invoice management.
     * Displays unassigned invoices.
     * Integrates drag and drop functionality to assign invoices to projects.
     * Coordinates the `BillCardComponent`, `ProjectBoardComponent`, and `AddProjectFormComponent` components.
 
-    <img src="src/assets/images/readme_img/gestion_facturas.png" width="400" alt="Project Management Screen">
+    <img src="src/assets/images/readme_img/gestion_facturas.png" width="550" alt="Project Management Screen">
 
 4.  **`BillCardComponent`:** Visually renders an individual invoice and allows it to be deleted or dragged.
 
@@ -51,16 +51,16 @@ Facturador Web is built using the following technologies:
 
 6.  **`AddProjectFormComponent`:** Pop-up form to create new projects, allowing users to assign a name and select technologies.
 
-    <img src="src/assets/images/readme_img/proyecto_form.png" width="400" alt="Add Project Form">
+    <img src="src/assets/images/readme_img/proyecto_form.png" width="550" alt="Add Project Form">
 
 7.  **`DashboardComponent`:** Provides an overview of invoices with interactive graphs (bar and segmented) and query options by period and year.
 
-    <img src="src/assets/images/readme_img/dashboard.png" width="600" alt="Dashboard Screen">
+    <img src="src/assets/images/readme_img/dashboard.png" width="550" alt="Dashboard Screen">
 
 8.  **`ProfessionalItinerariesComponent`:** Visually displays the technologies required by a professional itinerary and the user's skills, allowing them to be modified and saved.
 
-    <img src="src/assets/images/readme_img/itinerarios.png" width="600" alt="Professional Itineraries Screen">
-    
+    <img src="src/assets/images/readme_img/itinerarios.png" width="550" alt="Professional Itineraries Screen">
+
 ## Database Structure (Web-Related)
 
 * **Users:** User information is managed through Firebase Authentication.
